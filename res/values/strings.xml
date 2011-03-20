@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ShoppingTweeter</string>
+    <string name="item">Item</string>
+    <string name="expense">Expense</string>
+    <string name="category">Category</string>
+    <string name="category_food">Food</string>
+    <string name="category_lunch">Lunch</string>
+    <string name="category_dinner">Dinner</string>
+    <string name="category_alcohol">Alcohol</string>
+    <string name="category_snack_cafe">Snack_Cafe</string>
+    <string name="category_transport">Transport</string>
+    <string name="category_stationery_tool">Stationery_Tool</string>
+    <string name="category_book">Book</string>
+    <string name="category_fashion">Fashion</string>
+    <string name="category_beauty_health">Beauty_Health</string>
+    <string name="category_hobby">Hobby</string>
+    <string name="category_Household">Household</string>
+    <string name="category_friendship">Friendship</string>
+    <string name="category_other">Other</string>
+    <string name="creditcard">CreditCard</string>
+    <string name="secret">Secret</string>
+    <string name="tweet">Tweet</string>
+    <string name="reset">Reset</string>
+</resources>
