@@ -3,6 +3,7 @@
     <string name="app_name">ShoppingTweeter</string>
     <string name="item">Item</string>
     <string name="expense">Expense</string>
+    <string name="comment">Comment</string>
     <string name="category">Category</string>
     <string name="category_food">Food</string>
     <string name="category_lunch">Lunch</string>
@@ -22,4 +23,6 @@
     <string name="secret">Secret</string>
     <string name="tweet">Tweet</string>
     <string name="reset">Reset</string>
+    <string name="necessary_msg">is necessary.</string>
+    <string name="too_long_msg">Tweet is too long.</string>
 </resources>
