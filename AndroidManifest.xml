@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="net.darchangel.shoppingTweeter" android:versionCode="1"
-	android:versionName="1.0" android:installLocation="auto">
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	package="net.darchangel.shoppingTweeter"
+	android:versionCode="1"
+	android:versionName="1.0"
+	android:installLocation="auto">
 
-
-	<application android:icon="@drawable/icon" android:label="@string/app_name">
-		<activity android:name=".shoppingTweeter" android:label="@string/app_name">
+	<application
+		android:icon="@drawable/icon"
+		android:label="@string/app_name">
+		<activity
+			android:name=".ShoppingTweeter"
+			android:label="@string/app_name">
 			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
+				<action
+					android:name="android.intent.action.MAIN" />
+				<category
+					android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
+		</activity>
+		<activity
+			android:name=".Preference"
+			android:label="pref">
 		</activity>
 
 	</application>
-	<supports-screens android:resizeable="true" />
+	<supports-screens
+		android:resizeable="true" />
 </manifest>

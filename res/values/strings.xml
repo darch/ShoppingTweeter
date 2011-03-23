@@ -1,28 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ShoppingTweeter</string>
-    <string name="item">Item</string>
-    <string name="expense">Expense</string>
-    <string name="comment">Comment</string>
-    <string name="category">Category</string>
-    <string name="category_food">Food</string>
-    <string name="category_lunch">Lunch</string>
-    <string name="category_dinner">Dinner</string>
-    <string name="category_alcohol">Alcohol</string>
-    <string name="category_snack_cafe">Snack_Cafe</string>
-    <string name="category_transport">Transport</string>
-    <string name="category_stationery_tool">Stationery_Tool</string>
-    <string name="category_book">Book</string>
-    <string name="category_fashion">Fashion</string>
-    <string name="category_beauty_health">Beauty_Health</string>
-    <string name="category_hobby">Hobby</string>
-    <string name="category_Household">Household</string>
-    <string name="category_friendship">Friendship</string>
-    <string name="category_other">Other</string>
-    <string name="creditcard">CreditCard</string>
-    <string name="secret">Secret</string>
-    <string name="tweet">Tweet</string>
-    <string name="reset">Reset</string>
-    <string name="necessary_msg">is necessary.</string>
-    <string name="too_long_msg">Tweet is too long.</string>
+	<string
+		name="app_name">ShoppingTweeter</string>
+	<string
+		name="item">Item</string>
+	<string
+		name="expense">Expense</string>
+	<string
+		name="comment">Comment</string>
+	<string
+		name="category">Category</string>
+	<string
+		name="category_food">Food</string>
+	<string
+		name="category_lunch">Lunch</string>
+	<string
+		name="category_dinner">Dinner</string>
+	<string
+		name="category_alcohol">Alcohol</string>
+	<string
+		name="category_snack_cafe">Snack_Cafe</string>
+	<string
+		name="category_transport">Transport</string>
+	<string
+		name="category_stationery_tool">Stationery_Tool</string>
+	<string
+		name="category_book">Book</string>
+	<string
+		name="category_fashion">Fashion</string>
+	<string
+		name="category_beauty_health">Beauty_Health</string>
+	<string
+		name="category_hobby">Hobby</string>
+	<string
+		name="category_Household">Household</string>
+	<string
+		name="category_friendship">Friendship</string>
+	<string
+		name="category_other">Other</string>
+	<string
+		name="creditcard">CreditCard</string>
+	<string
+		name="check_creditcard">#credit</string>
+	<string
+		name="secret">Secret</string>
+	<string
+		name="check_secret">d expense</string>
+	<string
+		name="tweet">Tweet</string>
+	<string
+		name="reset">Reset</string>
+	<string
+		name="necessary_msg">is necessary.</string>
+	<string
+		name="only_number">expense can input only number.</string>
+	<string
+		name="too_long_msg">Tweet is too long.</string>
+	<string
+		name="menu_pref">Settings</string>
+	<string
+		name="pref_title">Settings</string>
+	<string
+		name="currency_mark_use_key">pref_currency_mark_use</string>
+	<string
+		name="currency_mark_use_title">Use Currency Mark</string>
+	<string
+		name="currency_mark_use_sum">check if you use "space + currency mark" setting</string>
+	<string
+		name="currency_mark_type_key">pref_currency_mark_type</string>
+	<string
+		name="currency_mark_type_title">Currency Mark</string>
+	<string
+		name="currency_mark_type_sum">select currency mark</string>
+	<string
+		name="currency_mark_type_dolar">$</string>
+	<string
+		name="currency_mark_type_yen">\\</string>
+	<string
+		name="currency_mark_type_euro">€</string>
+	<string
+		name="currency_mark_type_pound">£</string>
 </resources>
