@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string
+		name="tweet_length">140</string>
+	<string
 		name="app_name">ShoppingTweeter</string>
 	<string
 		name="item">Item</string>
@@ -51,7 +53,7 @@
 	<string
 		name="reset">Reset</string>
 	<string
-		name="necessary_msg">is necessary.</string>
+		name="necessary_msg">%s is necessary.</string>
 	<string
 		name="only_number">expense can input only number.</string>
 	<string

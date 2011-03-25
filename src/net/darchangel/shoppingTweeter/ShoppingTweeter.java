@@ -1,5 +1,7 @@
 package net.darchangel.shoppingTweeter;
 
+import net.darchangel.shoppingTweeter.exception.NoInputException;
+import net.darchangel.shoppingTweeter.exception.tooLongException;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -122,63 +124,51 @@ public class ShoppingTweeter extends Activity {
 	 */
 	private String checkTweetable() {
 		String tweet_str = "";
-		String necessary = "";
-		boolean canTweet = true;
 
-		if (item.getText().length() == 0) {
-			// itemが入力されているかチェック
+		try {
 
-			necessary = getString(R.string.item);
-			canTweet = false;
-			item.requestFocusFromTouch();
-		} else if (expense.getText().length() == 0) {
-			// expenseが入力されているかチェック
+			// 必須項目の入力チェック
+			checkInput(item, getString(R.string.item));
+			checkInput(expense, getString(R.string.expense));
 
-			necessary = getString(R.string.expense);
-			canTweet = false;
-			expense.requestFocusFromTouch();
-		}
+			// expenseに数字以外が入力されていないかチェック
+			Integer.parseInt(expense.getText().toString());
 
-		if (canTweet == false) {
-			// 必須項目が入力されていない場合
-
-			// メッセージを表示
-			Toast.makeText(ShoppingTweeter.this,
-					necessary + " " + getString(R.string.necessary_msg),
-					Toast.LENGTH_SHORT).show();
-		}
-
-		if (canTweet && checkNum(expense.getText().toString()) == false) {
-			// expecseに数値以外が入力されていないかチェック
-
-			// メッセージを表示
-			Toast.makeText(ShoppingTweeter.this,
-					necessary + " " + getString(R.string.only_number),
-					Toast.LENGTH_SHORT).show();
-
-			canTweet = false;
-			expense.requestFocusFromTouch();
-		}
-
-		if (canTweet) {
 			// Tweet内容を生成
 			tweet_str = makeTweet();
 
-			if (tweet_str.length() > 140) {
-				// Tweet内容が140文字を超える場合
+			// Tweet内容の文字数をチェック
+			checkTweetLength(tweet_str);
 
-				int tweet_length = tweet_str.length();
-				// メッセージを表示
-				Toast.makeText(
-						ShoppingTweeter.this,
-						String.format(getString(R.string.too_long_msg,
-								tweet_length)), Toast.LENGTH_SHORT).show();
+		} catch (NoInputException e) {
+			// 必須項目が入力されていなかった場合
 
-				// Tweet内容をクリア
-				tweet_str = "";
-			}
+			// メッセージを表示
+			Toast.makeText(
+					ShoppingTweeter.this,
+					String.format(getString(R.string.necessary_msg), e
+							.getName()), Toast.LENGTH_SHORT).show();
+
+		} catch (NumberFormatException e) {
+			// expenseに数字以外が入力されていた場合
+
+			// メッセージを表示
+			Toast.makeText(ShoppingTweeter.this,
+					getString(R.string.only_number), Toast.LENGTH_SHORT).show();
+
+		} catch (tooLongException e) {
+			// 入力内容が規定文字数より長い場合
+
+			// メッセージを表示
+			Toast.makeText(
+					ShoppingTweeter.this,
+					String.format(getString(R.string.too_long_msg), e
+							.getLength()), Toast.LENGTH_SHORT).show();
+
+			// Tweet内容をクリア
+			tweet_str = "";
+
 		}
-
 		return tweet_str;
 	}
 
@@ -230,12 +220,40 @@ public class ShoppingTweeter extends Activity {
 		secret.setChecked(false);
 	}
 
-	private boolean checkNum(String str) {
-		try {
-			Integer.parseInt(str);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
+	/**
+	 * EditTextに文字が入力されているかチェックする
+	 * 
+	 * @param input
+	 * @param name
+	 * @throws NoInputException
+	 */
+	private void checkInput(EditText input, String name)
+			throws NoInputException {
+		// EditTextに入力されている文字列を取得
+		String str = input.getText().toString();
+
+		if (str.trim().length() == 0) {
+			// 文字列の末尾のスペースを除いた長さが0の場合
+
+			throw new NoInputException(name);
+		}
+	}
+
+	/**
+	 * 文字列が規定文字数(140文字)を越えていないかチェックする
+	 * 
+	 * @param str
+	 *            文字列
+	 * @throws IllegalStateException
+	 */
+	private void checkTweetLength(String str) throws tooLongException {
+		// 規定文字数を取得
+		int tweet_length = Integer.parseInt(getString(R.string.tweet_length));
+
+		if (str.length() > tweet_length) {
+			// Tweet内容が規定文字数を超える場合
+
+			throw new tooLongException(str.length());
 		}
 	}
 }
