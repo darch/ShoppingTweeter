@@ -55,7 +55,7 @@
 	<string
 		name="only_number">expense can input only number.</string>
 	<string
-		name="too_long_msg">Tweet is too long.</string>
+		name="too_long_msg">Tweet is too long.(%d)</string>
 	<string
 		name="menu_pref">Settings</string>
 	<string

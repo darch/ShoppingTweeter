@@ -171,8 +171,8 @@ public class ShoppingTweeter extends Activity {
 				// メッセージを表示
 				Toast.makeText(
 						ShoppingTweeter.this,
-						getString(R.string.too_long_msg) + "(" + tweet_length
-								+ ")", Toast.LENGTH_SHORT).show();
+						String.format(getString(R.string.too_long_msg,
+								tweet_length)), Toast.LENGTH_SHORT).show();
 
 				// Tweet内容をクリア
 				tweet_str = "";
