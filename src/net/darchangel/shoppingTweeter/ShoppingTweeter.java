@@ -82,6 +82,7 @@ public class ShoppingTweeter extends Activity {
 			/**
 			 * ボタンがクリックされたときに呼び出し
 			 */
+			@Override
 			public void onClick(View v) {
 				String tweet_str = checkTweetable();
 				if (tweet_str.length() != 0) {
@@ -109,6 +110,7 @@ public class ShoppingTweeter extends Activity {
 			/**
 			 * ボタンがクリックされたときに呼び出し
 			 */
+			@Override
 			public void onClick(View v) {
 				// フォームをリセット
 				clearForm();
