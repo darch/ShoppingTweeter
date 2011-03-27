@@ -132,7 +132,7 @@ public class ShoppingTweeter extends Activity {
 			checkInput(expense, getString(R.string.expense));
 
 			// expenseに数字以外が入力されていないかチェック
-			Integer.parseInt(expense.getText().toString());
+			checkNumber(expense, getString(R.string.expense));
 
 			// Tweet内容を生成
 			tweet_str = makeTweet();
@@ -237,6 +237,27 @@ public class ShoppingTweeter extends Activity {
 
 			throw new NoInputException(name);
 		}
+	}
+
+	/**
+	 * EditTextに入力された文字が正の数であることをチェックする
+	 * 
+	 * @param input
+	 * @param name
+	 * @throws NumberFormatException
+	 */
+	private void checkNumber(EditText input, String name)
+			throws NumberFormatException {
+
+		// EditTextに入力されている文字を数値に変換
+		double input_num = Double.parseDouble(input.getText().toString());
+
+		if (input_num < 0) {
+			// 入力されている数値が0未満の場合
+
+			throw new NumberFormatException();
+		}
+
 	}
 
 	/**
