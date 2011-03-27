@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-	xmlns:android="http://schemas.android.com/apk/res/android">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:key="preference">
 	<PreferenceCategory
-		android:title="@string/pref_title">
+		android:title="@string/pref_category_title">
 		<CheckBoxPreference
 			android:key="@string/currency_mark_use_key"
 			android:title="@string/currency_mark_use_title"
@@ -12,6 +13,17 @@
 			android:title="@string/currency_mark_type_title"
 			android:summary="@string/currency_mark_type_sum"
 			android:dependency="@string/currency_mark_use_key"
-			android:entries="@array/currency_mark_list" android:entryValues="@array/currency_mark_list"/>
+			android:entries="@array/currency_mark_list"
+			android:entryValues="@array/currency_mark_list" />
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="@string/pref_category_auth">
+		<PreferenceScreen
+			android:key="@string/pref_login_key"
+			android:title="@string/pref_login_title"
+			android:summary="@string/pref_state_logout" />
+		<PreferenceScreen
+			android:key="@string/pref_logout_key"
+			android:title="@string/pref_logout_title" />
 	</PreferenceCategory>
 </PreferenceScreen>

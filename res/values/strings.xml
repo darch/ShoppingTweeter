@@ -61,13 +61,14 @@
 	<string
 		name="menu_pref">Settings</string>
 	<string
-		name="pref_title">Settings</string>
+		name="pref_category_title">Settings</string>
 	<string
 		name="currency_mark_use_key">pref_currency_mark_use</string>
 	<string
 		name="currency_mark_use_title">Use Currency Mark</string>
 	<string
-		name="currency_mark_use_sum">check if you use "space + currency mark" setting</string>
+		name="currency_mark_use_sum">check if you use "space + currency mark" setting
+	</string>
 	<string
 		name="currency_mark_type_key">pref_currency_mark_type</string>
 	<string
@@ -82,4 +83,18 @@
 		name="currency_mark_type_euro">€</string>
 	<string
 		name="currency_mark_type_pound">£</string>
+	<string
+		name="pref_category_auth">Auth</string>
+	<string
+		name="pref_login_key">login</string>
+	<string
+		name="pref_login_title">Login</string>
+	<string
+		name="pref_state_logout">Not Logged in</string>
+	<string
+		name="pref_state_login">Already Logged in</string>
+	<string
+		name="pref_logout_key">logout</string>
+	<string
+		name="pref_logout_title">Logout</string>
 </resources>
