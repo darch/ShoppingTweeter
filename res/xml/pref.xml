@@ -18,11 +18,11 @@
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/pref_category_auth">
-		<PreferenceScreen
+		<Preference
 			android:key="@string/pref_login_key"
 			android:title="@string/pref_login_title"
 			android:summary="@string/pref_state_logout" />
-		<PreferenceScreen
+		<Preference
 			android:key="@string/pref_logout_key"
 			android:title="@string/pref_logout_title" />
 	</PreferenceCategory>

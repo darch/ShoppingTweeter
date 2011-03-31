@@ -45,7 +45,7 @@ public class ShoppingTweeter extends Activity {
 		// createCategoryList();
 
 		// ボタンのコールバックリスナーを登録
-		setButtonCallbackListener();
+		setAction();
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class ShoppingTweeter extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_pref:
-			Intent intent = new Intent(this, (Class<?>) Preference.class);
+			Intent intent = new Intent(this, (Class<?>) Pref.class);
 			startActivity(intent);
 			return false;
 		}
@@ -74,9 +74,9 @@ public class ShoppingTweeter extends Activity {
 	}
 
 	/**
-	 * ボタンのコールバックリスナーを登録
+	 * 動作を登録
 	 */
-	private void setButtonCallbackListener() {
+	private void setAction() {
 		// Tweetボタンがクリックされた時に呼び出されるコールバックリスナーを登録
 		tweet.setOnClickListener(new View.OnClickListener() {
 			/**
@@ -185,8 +185,8 @@ public class ShoppingTweeter extends Activity {
 
 		tweet_str += item.getText().toString();
 		tweet_str += " ";
-		if (Preference.useCurrencyMark(ShoppingTweeter.this)) {
-			tweet_str += Preference.getCurrencyMark(ShoppingTweeter.this);
+		if (Pref.useCurrencyMark(ShoppingTweeter.this)) {
+			tweet_str += Pref.getCurrencyMark(ShoppingTweeter.this);
 		}
 		tweet_str += expense.getText().toString();
 
