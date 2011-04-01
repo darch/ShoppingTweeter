@@ -11,7 +11,8 @@
 		android:label="@string/app_name">
 		<activity
 			android:name=".ShoppingTweeter"
-			android:label="@string/app_name">
+			android:label="@string/app_name"
+			android:launchMode="singleTask">
 			<intent-filter>
 				<action
 					android:name="android.intent.action.MAIN" />
@@ -21,10 +22,23 @@
 		</activity>
 		<activity
 			android:name=".Pref"
-			android:label="pref">
+			android:label="pref"
+			android:launchMode="singleTask">
+			<intent-filter>
+				<action
+					android:name="android.intent.action.VIEW" />
+				<category
+					android:name="android.intent.category.DEFAULT" />
+				<category
+					android:name="android.intent.category.BROWSABLE" />
+				<data
+					android:scheme="shoppingtweeter"
+					android:host="oauth" />
+			</intent-filter>
 		</activity>
-
 	</application>
 	<supports-screens
 		android:resizeable="true" />
+	<uses-permission
+		android:name="android.permission.INTERNET" />
 </manifest>

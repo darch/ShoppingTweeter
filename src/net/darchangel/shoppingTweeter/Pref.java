@@ -1,5 +1,11 @@
 package net.darchangel.shoppingTweeter;
 
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.RequestToken;
+import twitter4j.conf.ConfigurationBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +20,12 @@ public class Pref extends PreferenceActivity {
 
 	private Preference login;
 	private Preference logout;
+
+	private Twitter twitter = null;
+	private RequestToken requestToken = null;
+
+	private String CONSUMER_KEY = "zx6S2ou4UoIHdLtjQRYg";
+	private String CONSUMER_SECRET = "wumWmiYcqvmpB73xx5hCIHfcumPH4sheEWow9DLEw";
 
 	// ログイン状態
 	private String auth_status = "";
@@ -32,6 +44,16 @@ public class Pref extends PreferenceActivity {
 
 		setAction();
 
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		// ログイン状態をSharedPreferencesから取得
+		SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+		auth_status = pref.getString("status", "");
+
 		// ログイン状態を判定
 		if (isConnected(auth_status)) {
 			// ログイン済みの場合
@@ -44,6 +66,40 @@ public class Pref extends PreferenceActivity {
 			// Logoutを非活性化
 			logout.setEnabled(false);
 		}
+
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode,
+			Intent intent) {
+
+		// TODO intentがnullになってる
+		// TODO RESULT_CANCELEDでいいの？
+		if (resultCode == RESULT_CANCELED) {
+			super.onActivityResult(requestCode, resultCode, intent);
+
+			AccessToken accessToken = null;
+
+			try {
+				accessToken = twitter.getOAuthAccessToken(requestToken, intent
+						.getExtras().getString("oauth_verifier"));
+
+				SharedPreferences pref = getSharedPreferences("Twitter_seting",
+						MODE_PRIVATE);
+
+				SharedPreferences.Editor editor = pref.edit();
+				editor.putString("oauth_token", accessToken.getToken());
+				editor.putString("oauth_token_secret", accessToken
+						.getTokenSecret());
+				editor.putString("status", "connected");
+
+				editor.commit();
+
+				
+			} catch (TwitterException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -54,11 +110,14 @@ public class Pref extends PreferenceActivity {
 
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				// TODO TwitterのOAuth処理に変更
-				Uri uri = Uri.parse("http://www.google.co.jp");
-				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-				startActivity(intent);
-				return true;
+				try {
+					// ログイン処理を開始
+					connectTwitter();
+					return true;
+				} catch (TwitterException e) {
+					e.printStackTrace();
+					return false;
+				}
 			}
 		});
 
@@ -66,7 +125,12 @@ public class Pref extends PreferenceActivity {
 
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				// TODO ログアウト処理を実装
+				// ログアウト処理を開始
+				disconnectTwitter();
+
+				login.setEnabled(true);
+				logout.setEnabled(false);
+
 				return true;
 			}
 		});
@@ -87,6 +151,55 @@ public class Pref extends PreferenceActivity {
 		}
 
 		return result;
+	}
+
+	/**
+	 * ログイン処理を行う
+	 * 
+	 * @throws TwitterException
+	 */
+	private void connectTwitter() throws TwitterException {
+
+		ConfigurationBuilder confbuilder = new ConfigurationBuilder();
+
+		confbuilder.setOAuthConsumerKey(CONSUMER_KEY);
+		confbuilder.setOAuthConsumerSecret(CONSUMER_SECRET);
+
+		twitter = new TwitterFactory(confbuilder.build()).getInstance();
+
+		String CALLBACK_URL = "shoppingtweeter://oauth";
+		// requestTokenもクラス変数。
+		try {
+			requestToken = twitter.getOAuthRequestToken(CALLBACK_URL);
+		} catch (TwitterException e) {
+			e.printStackTrace();
+		}
+
+		// 認証用URLをインテントにセット。
+		// TwitterLoginはActivityのクラス名。
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setData(Uri.parse(requestToken.getAuthorizationURL()));
+
+		// アクティビティを起動
+		this.startActivityForResult(intent, 0);
+
+	}
+
+	/**
+	 * ログアウト処理を行う
+	 */
+	private void disconnectTwitter() {
+
+		SharedPreferences pref = getSharedPreferences("Twitter_seting",
+				MODE_PRIVATE);
+
+		SharedPreferences.Editor editor = pref.edit();
+		editor.remove("oauth_token");
+		editor.remove("oauth_token_secret");
+		editor.remove("status");
+
+		editor.commit();
+
 	}
 
 	/**

@@ -91,13 +91,8 @@ public class ShoppingTweeter extends Activity {
 					// Tweetする
 					Toast.makeText(ShoppingTweeter.this, tweet_str,
 							Toast.LENGTH_SHORT).show();
-					// try {
-					// Twitter twitter = new TwitterFactory().getInstance();
-					// // TODO OAuth認証を実装
-					// twitter.updateStatus(tweet_str);
-					// } catch (TwitterException e) {
-					//
-					// }
+
+					// TODO Tweetを実装
 
 					// フォームをリセット
 					clearForm();
