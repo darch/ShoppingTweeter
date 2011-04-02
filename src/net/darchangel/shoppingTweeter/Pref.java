@@ -9,7 +9,6 @@ import twitter4j.conf.ConfigurationBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -17,6 +16,9 @@ import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceClickListener;
 
 public class Pref extends PreferenceActivity {
+
+	// リクエストコード
+	private final int REQUEST_AUTH = 1;
 
 	private Preference login;
 	private Preference logout;
@@ -58,12 +60,14 @@ public class Pref extends PreferenceActivity {
 		if (isConnected(auth_status)) {
 			// ログイン済みの場合
 
-			// Loginを非活性化
+			// Loginを非活性化し、Logoutを活性化
 			login.setEnabled(false);
+			logout.setEnabled(true);
 		} else {
 			// 未ログインの場合
 
-			// Logoutを非活性化
+			// Loginを活性化し、Logoutを非活性化
+			login.setEnabled(true);
 			logout.setEnabled(false);
 		}
 
@@ -73,9 +77,7 @@ public class Pref extends PreferenceActivity {
 	protected void onActivityResult(int requestCode, int resultCode,
 			Intent intent) {
 
-		// TODO intentがnullになってる
-		// TODO RESULT_CANCELEDでいいの？
-		if (resultCode == RESULT_CANCELED) {
+		if (resultCode == RESULT_OK) {
 			super.onActivityResult(requestCode, resultCode, intent);
 
 			AccessToken accessToken = null;
@@ -84,7 +86,7 @@ public class Pref extends PreferenceActivity {
 				accessToken = twitter.getOAuthAccessToken(requestToken, intent
 						.getExtras().getString("oauth_verifier"));
 
-				SharedPreferences pref = getSharedPreferences("Twitter_seting",
+				SharedPreferences pref = getSharedPreferences("pref",
 						MODE_PRIVATE);
 
 				SharedPreferences.Editor editor = pref.edit();
@@ -95,7 +97,6 @@ public class Pref extends PreferenceActivity {
 
 				editor.commit();
 
-				
 			} catch (TwitterException e) {
 				e.printStackTrace();
 			}
@@ -177,11 +178,11 @@ public class Pref extends PreferenceActivity {
 
 		// 認証用URLをインテントにセット。
 		// TwitterLoginはActivityのクラス名。
-		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(Uri.parse(requestToken.getAuthorizationURL()));
+		Intent intent = new Intent(this, TwitterLogin.class);
+		intent.putExtra("auth_url", requestToken.getAuthorizationURL());
 
 		// アクティビティを起動
-		this.startActivityForResult(intent, 0);
+		this.startActivityForResult(intent, REQUEST_AUTH);
 
 	}
 
@@ -190,8 +191,7 @@ public class Pref extends PreferenceActivity {
 	 */
 	private void disconnectTwitter() {
 
-		SharedPreferences pref = getSharedPreferences("Twitter_seting",
-				MODE_PRIVATE);
+		SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
 
 		SharedPreferences.Editor editor = pref.edit();
 		editor.remove("oauth_token");

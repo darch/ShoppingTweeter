@@ -36,6 +36,8 @@
 					android:host="oauth" />
 			</intent-filter>
 		</activity>
+		<activity
+			android:name="TwitterLogin"></activity>
 	</application>
 	<supports-screens
 		android:resizeable="true" />
