@@ -20,14 +20,14 @@ public class Pref extends PreferenceActivity {
 	// リクエストコード
 	private final int REQUEST_AUTH = 1;
 
+	private final String CONSUMER_KEY = "zx6S2ou4UoIHdLtjQRYg";
+	private final String CONSUMER_SECRET = "wumWmiYcqvmpB73xx5hCIHfcumPH4sheEWow9DLEw";
+
 	private Preference login;
 	private Preference logout;
 
 	private Twitter twitter = null;
 	private RequestToken requestToken = null;
-
-	private String CONSUMER_KEY = "zx6S2ou4UoIHdLtjQRYg";
-	private String CONSUMER_SECRET = "wumWmiYcqvmpB73xx5hCIHfcumPH4sheEWow9DLEw";
 
 	// ログイン状態
 	private String auth_status = "";

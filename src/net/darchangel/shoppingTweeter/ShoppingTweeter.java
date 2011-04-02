@@ -2,8 +2,15 @@ package net.darchangel.shoppingTweeter;
 
 import net.darchangel.shoppingTweeter.exception.NoInputException;
 import net.darchangel.shoppingTweeter.exception.tooLongException;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
+import twitter4j.conf.ConfigurationBuilder;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +24,9 @@ import android.widget.Toast;
 
 public class ShoppingTweeter extends Activity {
 
+	private final String CONSUMER_KEY = "zx6S2ou4UoIHdLtjQRYg";
+	private final String CONSUMER_SECRET = "wumWmiYcqvmpB73xx5hCIHfcumPH4sheEWow9DLEw";
+
 	private EditText item = null;
 	private EditText expense = null;
 	private EditText comment = null;
@@ -26,11 +36,15 @@ public class ShoppingTweeter extends Activity {
 	private Button tweet = null;
 	private Button reset = null;
 
+	private SharedPreferences pref;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+
+		pref = getSharedPreferences("pref", MODE_PRIVATE);
 
 		item = (EditText) findViewById(R.id.item);
 		expense = (EditText) findViewById(R.id.expense);
@@ -89,11 +103,22 @@ public class ShoppingTweeter extends Activity {
 					// Tweet可能な場合
 
 					// Tweetする
-					Toast.makeText(ShoppingTweeter.this, tweet_str,
-							Toast.LENGTH_SHORT).show();
+					try {
+						// TODO Tweetを実装
+						AccessToken accessToken = new AccessToken(pref
+								.getString("oauth_token", ""), pref.getString(
+								"oauth_token_secret", ""));
+						ConfigurationBuilder confbuilder = new ConfigurationBuilder();
 
-					// TODO Tweetを実装
+						confbuilder.setOAuthConsumerKey(CONSUMER_KEY);
+						confbuilder.setOAuthConsumerSecret(CONSUMER_SECRET);
 
+						Twitter twitter = new TwitterFactory(confbuilder
+								.build()).getInstance(accessToken);
+						Status status = twitter.updateStatus(tweet_str);
+					} catch (TwitterException e) {
+						e.printStackTrace();
+					}
 					// フォームをリセット
 					clearForm();
 				}
