@@ -78,7 +78,7 @@
 	<string
 		name="currency_mark_type_dolar">$</string>
 	<string
-		name="currency_mark_type_yen">\\</string>
+		name="currency_mark_type_yen">¥</string>
 	<string
 		name="currency_mark_type_euro">€</string>
 	<string
