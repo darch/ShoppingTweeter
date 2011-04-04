@@ -97,4 +97,10 @@
 		name="pref_logout_key">logout</string>
 	<string
 		name="pref_logout_title">Logout</string>
+	<string
+		name="tweet_success">Success!</string>
+	<string
+		name="tweet_fail">Failed.</string>
+	<string
+		name="please_login">Please login twitter from Menu > Setting > Login</string>
 </resources>

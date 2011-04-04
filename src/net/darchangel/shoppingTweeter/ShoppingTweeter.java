@@ -2,7 +2,6 @@ package net.darchangel.shoppingTweeter;
 
 import net.darchangel.shoppingTweeter.exception.NoInputException;
 import net.darchangel.shoppingTweeter.exception.tooLongException;
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -38,7 +37,6 @@ public class ShoppingTweeter extends Activity {
 
 	private SharedPreferences pref;
 
-	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,11 +53,31 @@ public class ShoppingTweeter extends Activity {
 		tweet = (Button) findViewById(R.id.tweet);
 		reset = (Button) findViewById(R.id.reset);
 
-		// カテゴリリストを生成
-		// createCategoryList();
-
 		// ボタンのコールバックリスナーを登録
 		setAction();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		String auth_status = pref.getString("status", "");
+		if (auth_status.equals("")) {
+			// ログインしてない場合
+
+			// Tweetボタンを非活性化
+			tweet.setEnabled(false);
+
+			// ログインするようメッセージを表示
+			Toast.makeText(ShoppingTweeter.this, R.string.please_login,
+					Toast.LENGTH_LONG).show();
+
+		} else {
+			// ログイン済みの場合
+
+			// Tweetボタンを活性化
+			tweet.setEnabled(true);
+		}
 	}
 
 	/**
@@ -104,7 +122,6 @@ public class ShoppingTweeter extends Activity {
 
 					// Tweetする
 					try {
-						// TODO Tweetを実装
 						AccessToken accessToken = new AccessToken(pref
 								.getString("oauth_token", ""), pref.getString(
 								"oauth_token_secret", ""));
@@ -115,12 +132,22 @@ public class ShoppingTweeter extends Activity {
 
 						Twitter twitter = new TwitterFactory(confbuilder
 								.build()).getInstance(accessToken);
-						Status status = twitter.updateStatus(tweet_str);
+						twitter.updateStatus(tweet_str);
+
+						Toast.makeText(ShoppingTweeter.this,
+								R.string.tweet_success, Toast.LENGTH_LONG)
+								.show();
+
+						// フォームをリセット
+						clearForm();
 					} catch (TwitterException e) {
+
+						// Tweet失敗のメッセージを表示
+						Toast.makeText(ShoppingTweeter.this,
+								R.string.tweet_fail, Toast.LENGTH_SHORT).show();
+
 						e.printStackTrace();
 					}
-					// フォームをリセット
-					clearForm();
 				}
 			}
 		});

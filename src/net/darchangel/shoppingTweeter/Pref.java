@@ -37,8 +37,8 @@ public class Pref extends PreferenceActivity {
 
 		addPreferencesFromResource(R.xml.pref);
 
-		SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
 		// ログイン状態をSharedPreferencesから取得
+		SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
 		auth_status = pref.getString("status", "");
 
 		login = (Preference) findPreference(getString(R.string.pref_login_key));
