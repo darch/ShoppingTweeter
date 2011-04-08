@@ -1,0 +1,4 @@
+ShoppingTweeter includes Twitter4J.
+
+Twitter4J is licensed Apache License V2.0.
+You can see the license term at Twitter4J-LICENSE.txt
