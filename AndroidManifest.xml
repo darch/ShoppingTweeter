@@ -43,4 +43,8 @@
 		android:resizeable="true" />
 	<uses-permission
 		android:name="android.permission.INTERNET" />
+	<uses-sdk
+		android:targetSdkVersion="8"
+		android:minSdkVersion="3"
+		android:maxSdkVersion="8"></uses-sdk>
 </manifest>

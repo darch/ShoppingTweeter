@@ -20,9 +20,6 @@ public class Pref extends PreferenceActivity {
 	// リクエストコード
 	private final int REQUEST_AUTH = 1;
 
-	private final String CONSUMER_KEY = "zx6S2ou4UoIHdLtjQRYg";
-	private final String CONSUMER_SECRET = "wumWmiYcqvmpB73xx5hCIHfcumPH4sheEWow9DLEw";
-
 	private Preference login;
 	private Preference logout;
 
@@ -37,9 +34,8 @@ public class Pref extends PreferenceActivity {
 
 		addPreferencesFromResource(R.xml.pref);
 
-		// ログイン状態をSharedPreferencesから取得
-		SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-		auth_status = pref.getString("status", "");
+		// ログイン状態を取得
+		auth_status = Pref.getStatus(this);
 
 		login = (Preference) findPreference(getString(R.string.pref_login_key));
 		logout = (Preference) findPreference(getString(R.string.pref_logout_key));
@@ -52,9 +48,8 @@ public class Pref extends PreferenceActivity {
 	protected void onStart() {
 		super.onStart();
 
-		// ログイン状態をSharedPreferencesから取得
-		SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-		auth_status = pref.getString("status", "");
+		// ログイン状態を取得
+		auth_status = Pref.getStatus(this);
 
 		// ログイン状態を判定
 		if (isConnected(auth_status)) {
@@ -83,17 +78,23 @@ public class Pref extends PreferenceActivity {
 			AccessToken accessToken = null;
 
 			try {
+				// OAuthAccessTokenを取得
 				accessToken = twitter.getOAuthAccessToken(requestToken, intent
-						.getExtras().getString("oauth_verifier"));
+						.getExtras().getString(
+								getString(R.string.twitter_oauth_verifier)));
 
-				SharedPreferences pref = getSharedPreferences("pref",
-						MODE_PRIVATE);
+				SharedPreferences pref = getSharedPreferences(
+						getString(R.string.twitter_prefs_key), MODE_PRIVATE);
 
+				// SharedPreferenceにOAuthAccessTokenを記録
 				SharedPreferences.Editor editor = pref.edit();
-				editor.putString("oauth_token", accessToken.getToken());
-				editor.putString("oauth_token_secret", accessToken
-						.getTokenSecret());
-				editor.putString("status", "connected");
+				editor.putString(getString(R.string.twitter_oauth_token_key),
+						accessToken.getToken());
+				editor.putString(
+						getString(R.string.twitter_oauth_token_secret_key),
+						accessToken.getTokenSecret());
+				editor.putString(getString(R.string.twitter_connect_key),
+						getString(R.string.status_connected));
 
 				editor.commit();
 
@@ -146,7 +147,8 @@ public class Pref extends PreferenceActivity {
 	private boolean isConnected(String status) {
 		boolean result = false;
 
-		if (status != null && status.equals("connected")) {
+		if (status != null
+				&& status.equals(getString(R.string.status_connected))) {
 			// statusがnullじゃなく、かつ"connected"の場合はログイン済み
 			return true;
 		}
@@ -161,17 +163,17 @@ public class Pref extends PreferenceActivity {
 	 */
 	private void connectTwitter() throws TwitterException {
 
+		// Consumer keyとConsumer secretを設定
 		ConfigurationBuilder confbuilder = new ConfigurationBuilder();
-
-		confbuilder.setOAuthConsumerKey(CONSUMER_KEY);
-		confbuilder.setOAuthConsumerSecret(CONSUMER_SECRET);
+		confbuilder.setOAuthConsumerKey(getString(R.string.consumer_key));
+		confbuilder.setOAuthConsumerSecret(getString(R.string.consumer_secret));
 
 		twitter = new TwitterFactory(confbuilder.build()).getInstance();
 
-		String CALLBACK_URL = "shoppingtweeter://oauth";
-		// requestTokenもクラス変数。
+		// requestTokenの取得
 		try {
-			requestToken = twitter.getOAuthRequestToken(CALLBACK_URL);
+			requestToken = twitter
+					.getOAuthRequestToken(getString(R.string.callback_url));
 		} catch (TwitterException e) {
 			e.printStackTrace();
 		}
@@ -179,7 +181,8 @@ public class Pref extends PreferenceActivity {
 		// 認証用URLをインテントにセット。
 		// TwitterLoginはActivityのクラス名。
 		Intent intent = new Intent(this, TwitterLogin.class);
-		intent.putExtra("auth_url", requestToken.getAuthorizationURL());
+		intent.putExtra(getString(R.string.auth_url), requestToken
+				.getAuthorizationURL());
 
 		// アクティビティを起動
 		this.startActivityForResult(intent, REQUEST_AUTH);
@@ -191,12 +194,13 @@ public class Pref extends PreferenceActivity {
 	 */
 	private void disconnectTwitter() {
 
-		SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+		SharedPreferences pref = getSharedPreferences(
+				getString(R.string.twitter_prefs_key), MODE_PRIVATE);
 
 		SharedPreferences.Editor editor = pref.edit();
-		editor.remove("oauth_token");
-		editor.remove("oauth_token_secret");
-		editor.remove("status");
+		editor.remove(getString(R.string.twitter_oauth_token_key));
+		editor.remove(getString(R.string.twitter_oauth_token_secret_key));
+		editor.remove(getString(R.string.twitter_connect_key));
 
 		editor.commit();
 
@@ -227,5 +231,60 @@ public class Pref extends PreferenceActivity {
 		return prefs.getString(context
 				.getString(R.string.currency_mark_type_key), context
 				.getString(R.string.currency_mark_type_dolar));
+	}
+
+	/**
+	 * default secretの設定値取得メソッド
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public static boolean getDefaultSecret(Context context) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		return prefs.getBoolean(context.getString(R.string.default_secret_key),
+				false);
+	}
+
+	/**
+	 * ログイン状態の取得メソッド
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public static String getStatus(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences(context
+				.getString(R.string.twitter_prefs_key), MODE_PRIVATE);
+
+		return prefs.getString(context.getString(R.string.twitter_connect_key),
+				"");
+	}
+
+	/**
+	 * OAuth Token取得メソッド
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public static String getOauthToken(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences(context
+				.getString(R.string.twitter_prefs_key), MODE_PRIVATE);
+
+		return prefs.getString(context
+				.getString(R.string.twitter_oauth_token_key), "");
+	}
+
+	/**
+	 * OAuth Token Secret取得メソッド
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public static String getOauthTokenSecret(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences(context
+				.getString(R.string.twitter_prefs_key), MODE_PRIVATE);
+
+		return prefs.getString(context
+				.getString(R.string.twitter_oauth_token_secret_key), "");
 	}
 }

@@ -23,28 +23,38 @@ public class TwitterLogin extends Activity {
 			public void onPageFinished(WebView view, String url) {
 				super.onPageFinished(view, url);
 
-				String CALLBACK_URL = "shoppingtweeter://oauth";
-				if (url != null && url.startsWith(CALLBACK_URL)) {
+				if (url != null
+						&& url.startsWith(getString(R.string.callback_url))) {
 					String[] urlParameters = url.split("\\?")[1].split("&");
 
 					String oauthToken = "";
 					String oauthVerifier = "";
 
-					if (urlParameters[0].startsWith("oauth_token")) {
+					// OAuthTokenを取得
+					if (urlParameters[0]
+							.startsWith(getString(R.string.twitter_oauth_token_key))) {
 						oauthToken = urlParameters[0].split("=")[1];
-					} else if (urlParameters[1].startsWith("oauth_token")) {
+					} else if (urlParameters[1]
+							.startsWith(getString(R.string.twitter_oauth_token_key))) {
 						oauthToken = urlParameters[1].split("=")[1];
 					}
 
-					if (urlParameters[0].startsWith("oauth_verifier")) {
+					// OAuthVerifierを取得
+					if (urlParameters[0]
+							.startsWith(getString(R.string.twitter_oauth_verifier))) {
 						oauthVerifier = urlParameters[0].split("=")[1];
-					} else if (urlParameters[1].startsWith("oauth_verifier")) {
+					} else if (urlParameters[1]
+							.startsWith(getString(R.string.twitter_oauth_verifier))) {
 						oauthVerifier = urlParameters[1].split("=")[1];
 					}
 
+					// intentにOAuth認証情報を記録
 					Intent intent = getIntent();
-					intent.putExtra("oauth_token", oauthToken);
-					intent.putExtra("oauth_verifier", oauthVerifier);
+					intent.putExtra(
+							getString(R.string.twitter_oauth_token_key),
+							oauthToken);
+					intent.putExtra(getString(R.string.twitter_oauth_verifier),
+							oauthVerifier);
 
 					setResult(Activity.RESULT_OK, intent);
 					finish();
@@ -52,7 +62,8 @@ public class TwitterLogin extends Activity {
 			}
 		});
 
-		webView.loadUrl(this.getIntent().getExtras().getString("auth_url"));
+		webView.loadUrl(this.getIntent().getExtras().getString(
+				getString(R.string.auth_url)));
 
 	}
 }

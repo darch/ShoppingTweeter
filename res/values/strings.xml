@@ -84,6 +84,12 @@
 	<string
 		name="currency_mark_type_pound">£</string>
 	<string
+		name="default_secret_key">pref_default_secret</string>
+	<string
+		name="default_secret_title">Default secret</string>
+	<string
+		name="default_secret_sum">set secret default</string>
+	<string
 		name="pref_category_auth">Auth</string>
 	<string
 		name="pref_login_key">login</string>
@@ -98,9 +104,29 @@
 	<string
 		name="pref_logout_title">Logout</string>
 	<string
+		name="twitter_prefs_key">pref</string>
+	<string
+		name="twitter_connect_key">status</string>
+	<string
+		name="twitter_oauth_token_key">oauth_token</string>
+	<string
+		name="twitter_oauth_token_secret_key">oauth_token_secret</string>
+	<string
+		name="twitter_oauth_verifier">oauth_verifier</string>
+	<string
 		name="tweet_success">Success!</string>
 	<string
 		name="tweet_fail">Failed.</string>
 	<string
 		name="please_login">Please login twitter from Menu > Setting > Login</string>
+	<string
+		name="auth_url">auth_url</string>
+	<string
+		name="callback_url">shoppingtweeter://oauth</string>
+	<string
+		name="consumer_key">zx6S2ou4UoIHdLtjQRYg</string>
+	<string
+		name="consumer_secret">wumWmiYcqvmpB73xx5hCIHfcumPH4sheEWow9DLEw</string>
+	<string
+		name="status_connected">connected</string>
 </resources>

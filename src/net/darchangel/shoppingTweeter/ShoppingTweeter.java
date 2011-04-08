@@ -9,12 +9,12 @@ import twitter4j.auth.AccessToken;
 import twitter4j.conf.ConfigurationBuilder;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -22,9 +22,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class ShoppingTweeter extends Activity {
-
-	private final String CONSUMER_KEY = "zx6S2ou4UoIHdLtjQRYg";
-	private final String CONSUMER_SECRET = "wumWmiYcqvmpB73xx5hCIHfcumPH4sheEWow9DLEw";
 
 	private EditText item = null;
 	private EditText expense = null;
@@ -35,14 +32,13 @@ public class ShoppingTweeter extends Activity {
 	private Button tweet = null;
 	private Button reset = null;
 
-	private SharedPreferences pref;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.main);
 
-		pref = getSharedPreferences("pref", MODE_PRIVATE);
+		setProgressBarIndeterminateVisibility(false);
 
 		item = (EditText) findViewById(R.id.item);
 		expense = (EditText) findViewById(R.id.expense);
@@ -61,7 +57,19 @@ public class ShoppingTweeter extends Activity {
 	protected void onResume() {
 		super.onResume();
 
-		String auth_status = pref.getString("status", "");
+		if (Pref.getDefaultSecret(ShoppingTweeter.this)) {
+			// secretデフォルト有効の場合
+
+			// secretをチェック
+			secret.setChecked(true);
+		} else {
+			// secretデフォルト無効の場合
+
+			// secretを未チェック
+			secret.setChecked(false);
+		}
+
+		String auth_status = Pref.getStatus(this);
 		if (auth_status.equals("")) {
 			// ログインしてない場合
 
@@ -122,18 +130,23 @@ public class ShoppingTweeter extends Activity {
 
 					// Tweetする
 					try {
-						AccessToken accessToken = new AccessToken(pref
-								.getString("oauth_token", ""), pref.getString(
-								"oauth_token_secret", ""));
-						ConfigurationBuilder confbuilder = new ConfigurationBuilder();
+						// AccessTokenの取得
+						AccessToken accessToken = new AccessToken(Pref
+								.getOauthToken(ShoppingTweeter.this), Pref
+								.getOauthTokenSecret(ShoppingTweeter.this));
 
-						confbuilder.setOAuthConsumerKey(CONSUMER_KEY);
-						confbuilder.setOAuthConsumerSecret(CONSUMER_SECRET);
+						// Consumer keyとConsumer secretを設定
+						ConfigurationBuilder confbuilder = new ConfigurationBuilder();
+						confbuilder
+								.setOAuthConsumerKey(getString(R.string.consumer_key));
+						confbuilder
+								.setOAuthConsumerSecret(getString(R.string.consumer_secret));
 
 						Twitter twitter = new TwitterFactory(confbuilder
 								.build()).getInstance(accessToken);
 						twitter.updateStatus(tweet_str);
 
+						// Tweet成功のメッセージを表示
 						Toast.makeText(ShoppingTweeter.this,
 								R.string.tweet_success, Toast.LENGTH_LONG)
 								.show();

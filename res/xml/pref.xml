@@ -16,6 +16,10 @@
 			android:dependency="@string/currency_mark_use_key"
 			android:entries="@array/currency_mark_list"
 			android:entryValues="@array/currency_mark_list" />
+		<CheckBoxPreference
+			android:key="@string/default_secret_key"
+			android:title="@string/default_secret_title"
+			android:summary="@string/default_secret_sum" />
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="@string/pref_category_auth">
