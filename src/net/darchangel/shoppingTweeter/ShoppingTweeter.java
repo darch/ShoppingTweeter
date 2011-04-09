@@ -2,6 +2,7 @@ package net.darchangel.shoppingTweeter;
 
 import net.darchangel.shoppingTweeter.exception.NoInputException;
 import net.darchangel.shoppingTweeter.exception.tooLongException;
+import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -130,21 +131,7 @@ public class ShoppingTweeter extends Activity {
 
 					// Tweetする
 					try {
-						// AccessTokenの取得
-						AccessToken accessToken = new AccessToken(Pref
-								.getOauthToken(ShoppingTweeter.this), Pref
-								.getOauthTokenSecret(ShoppingTweeter.this));
-
-						// Consumer keyとConsumer secretを設定
-						ConfigurationBuilder confbuilder = new ConfigurationBuilder();
-						confbuilder
-								.setOAuthConsumerKey(getString(R.string.consumer_key));
-						confbuilder
-								.setOAuthConsumerSecret(getString(R.string.consumer_secret));
-
-						Twitter twitter = new TwitterFactory(confbuilder
-								.build()).getInstance(accessToken);
-						twitter.updateStatus(tweet_str);
+						tweet(tweet_str);
 
 						// Tweet成功のメッセージを表示
 						Toast.makeText(ShoppingTweeter.this,
@@ -186,7 +173,6 @@ public class ShoppingTweeter extends Activity {
 		String tweet_str = "";
 
 		try {
-
 			// 必須項目の入力チェック
 			checkInput(item, getString(R.string.item));
 			checkInput(expense, getString(R.string.expense));
@@ -266,6 +252,30 @@ public class ShoppingTweeter extends Activity {
 		}
 
 		return tweet_str;
+	}
+
+	/**
+	 * 引数の文字列をつぶやく
+	 * 
+	 * @param str
+	 *            つぶやく文字列
+	 * @return
+	 * @throws TwitterException
+	 */
+	private Status tweet(String str) throws TwitterException {
+		// AccessTokenの取得
+		AccessToken accessToken = new AccessToken(Pref
+				.getOauthToken(ShoppingTweeter.this), Pref
+				.getOauthTokenSecret(ShoppingTweeter.this));
+
+		// Consumer keyとConsumer secretを設定
+		ConfigurationBuilder confbuilder = new ConfigurationBuilder();
+		confbuilder.setOAuthConsumerKey(getString(R.string.consumer_key));
+		confbuilder.setOAuthConsumerSecret(getString(R.string.consumer_secret));
+
+		Twitter twitter = new TwitterFactory(confbuilder.build())
+				.getInstance(accessToken);
+		return twitter.updateStatus(str);
 	}
 
 	/**
