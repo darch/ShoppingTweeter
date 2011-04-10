@@ -1,7 +1,7 @@
 package net.darchangel.shoppingTweeter;
 
 import net.darchangel.shoppingTweeter.exception.NoInputException;
-import net.darchangel.shoppingTweeter.exception.tooLongException;
+import net.darchangel.shoppingTweeter.exception.TooLongException;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -78,8 +78,8 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 						activity.getString(R.string.only_number),
 						Toast.LENGTH_SHORT).show();
 
-			} else if (exception instanceof tooLongException) {
-				tooLongException e = (tooLongException) exception;
+			} else if (exception instanceof TooLongException) {
+				TooLongException e = (TooLongException) exception;
 
 				// 入力内容が規定文字数より長い場合
 				Toast.makeText(
@@ -137,7 +137,7 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 
 			tweetStatus.setException(e);
 
-		} catch (tooLongException e) {
+		} catch (TooLongException e) {
 			// 入力内容が規定文字数より長い場合
 
 			tweetStatus.setException(e);
@@ -232,7 +232,7 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 	 *            文字列
 	 * @throws IllegalStateException
 	 */
-	private void checkTweetLength(String str) throws tooLongException {
+	private void checkTweetLength(String str) throws TooLongException {
 		// 規定文字数を取得
 		int tweet_length = Integer.parseInt(activity
 				.getString(R.string.tweet_length));
@@ -240,7 +240,7 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 		if (str.length() > tweet_length) {
 			// Tweet内容が規定文字数を超える場合
 
-			throw new tooLongException(str.length());
+			throw new TooLongException(str.length());
 		}
 	}
 
