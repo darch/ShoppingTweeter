@@ -1,11 +1,11 @@
 package net.darchangel.shoppingTweeter.exception;
 
-public class tooLongException extends Exception {
+public class TooLongException extends Exception {
 
 	private static final long serialVersionUID = 7433358933344934785L;
 	private int length = 0;
 
-	public tooLongException(int length) {
+	public TooLongException(int length) {
 		this.length = length;
 	}
 
