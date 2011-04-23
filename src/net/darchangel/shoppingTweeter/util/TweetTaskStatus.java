@@ -1,4 +1,4 @@
-package net.darchangel.shoppingTweeter;
+package net.darchangel.shoppingTweeter.util;
 
 import twitter4j.Status;
 

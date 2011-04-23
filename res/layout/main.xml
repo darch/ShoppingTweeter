@@ -17,6 +17,7 @@
 			android:layout_height="wrap_content"
 			android:layout_width="fill_parent"
 			android:id="@+id/item"
+			android:tag="@string/item"
 			android:autoText="true"
 			android:maxLines="1"
 			android:inputType="text"></EditText>
@@ -28,6 +29,7 @@
 			android:layout_height="wrap_content"
 			android:layout_width="fill_parent"
 			android:id="@+id/expense"
+			android:tag="@string/expense"
 			android:autoText="true"
 			android:maxLines="1"
 			android:inputType="text|number"></EditText>
@@ -39,6 +41,7 @@
 			android:layout_height="wrap_content"
 			android:layout_width="fill_parent"
 			android:id="@+id/comment"
+			android:tag="@string/comment"
 			android:autoText="true"
 			android:maxLines="1"
 			android:inputType="text"></EditText>
@@ -50,15 +53,18 @@
 			android:layout_height="wrap_content"
 			android:layout_width="fill_parent"
 			android:id="@+id/category"
+			android:tag="@string/category"
 			android:entries="@array/category_list" />
 		<CheckBox
 			android:text="@string/creditcard"
 			android:id="@+id/creditcard"
+			android:tag="@string/creditcard"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"></CheckBox>
 		<CheckBox
 			android:text="@string/secret"
 			android:id="@+id/secret"
+			android:tag="@string/secret"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"></CheckBox>
 		<Button

@@ -2,6 +2,8 @@ package net.darchangel.shoppingTweeter;
 
 import net.darchangel.shoppingTweeter.exception.NoInputException;
 import net.darchangel.shoppingTweeter.exception.TooLongException;
+import net.darchangel.shoppingTweeter.util.ShoppingItem;
+import net.darchangel.shoppingTweeter.util.TweetTaskStatus;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -12,11 +14,27 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
-	ShoppingTweeter activity;
-	TweetTaskStatus tweetStatus;
+	private ShoppingTweeter activity;
+	private String item;
+	private String expense;
+	private String comment;
+	private int category;
+	private boolean creditcard;
+	private boolean secret;
+
+	private TweetTaskStatus tweetStatus;
+
+	private ShoppingItem ShoppingItem;
 
 	public TweetTask(ShoppingTweeter activity) {
 		this.activity = activity;
+
+		item = this.activity.item.getText().toString();
+		expense = this.activity.expense.getText().toString();
+		comment = this.activity.comment.getText().toString();
+		category = this.activity.category.getSelectedItemPosition();
+		creditcard = this.activity.creditcard.isChecked();
+		secret = this.activity.secret.isChecked();
 	}
 
 	@Override
@@ -117,17 +135,24 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 
 		try {
 			// 必須項目の入力チェック
-			checkInput(activity.item, activity.getString(R.string.item));
-			checkInput(activity.expense, activity.getString(R.string.expense));
+			checkInput(activity.item);
+			checkInput(activity.expense);
 
 			// expenseに数字以外が入力されていないかチェック
-			checkNumber(activity.expense, activity.getString(R.string.expense));
+			checkNumber(activity.expense);
 
 			// Tweet内容を生成
 			tweet_str = makeTweet();
 
 			// Tweet内容の文字数をチェック
 			checkTweetLength(tweet_str);
+
+			// DB登録用データの作成
+			ShoppingItem = new ShoppingItem(item, Integer.parseInt(expense));
+			ShoppingItem.setComment(comment);
+			ShoppingItem.setCategory(category);
+			ShoppingItem.setUseCreditCard(creditcard);
+			ShoppingItem.setSecret(secret);
 
 		} catch (NoInputException e) {
 			// 必須項目が入力されていなかった場合
@@ -155,13 +180,12 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 	 * EditTextに文字が入力されているかチェックする
 	 * 
 	 * @param input
-	 * @param name
 	 * @throws NoInputException
 	 */
-	private void checkInput(EditText input, String name)
-			throws NoInputException {
+	private void checkInput(EditText input) throws NoInputException {
 		// EditTextに入力されている文字列を取得
 		String str = input.getText().toString();
+		String name = input.getTag().toString();
 
 		if (str.trim().length() == 0) {
 			// 文字列の末尾のスペースを除いた長さが0の場合
@@ -174,11 +198,9 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 	 * EditTextに入力された文字が正の数であることをチェックする
 	 * 
 	 * @param input
-	 * @param name
 	 * @throws NumberFormatException
 	 */
-	private void checkNumber(EditText input, String name)
-			throws NumberFormatException {
+	private void checkNumber(EditText input) throws NumberFormatException {
 
 		// EditTextに入力されている文字を数値に変換
 		double input_num = Double.parseDouble(input.getText().toString());
@@ -197,21 +219,21 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 	private String makeTweet() {
 		String tweet_str = "";
 
-		if (activity.secret.isChecked()) {
+		if (secret) {
 			// secretがチェックされている場合はダイレクトメッセージ
 			tweet_str += activity.getString(R.string.check_secret) + " ";
 		}
 
-		tweet_str += activity.item.getText().toString();
+		tweet_str += item;
 		tweet_str += " ";
 		if (Pref.useCurrencyMark(activity)) {
 			tweet_str += Pref.getCurrencyMark(activity);
 		}
-		tweet_str += activity.expense.getText().toString();
+		tweet_str += expense;
 
-		if (activity.comment.getText().length() != 0) {
+		if (comment.length() != 0) {
 			// コメントが入力されている場合は、つぶやきに追加
-			tweet_str += " " + activity.comment.getText().toString();
+			tweet_str += " " + comment;
 		}
 
 		if (!activity.getString(R.string.category_other).equals(
@@ -220,7 +242,7 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 			tweet_str += " #" + activity.category.getSelectedItem().toString();
 		}
 
-		if (activity.creditcard.isChecked()) {
+		if (creditcard) {
 			tweet_str += " " + activity.getString(R.string.check_creditcard);
 		}
 
