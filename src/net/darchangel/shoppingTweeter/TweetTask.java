@@ -56,6 +56,8 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 			// フォームをリセット
 			activity.clearForm();
 
+			// Itemにカーソル
+			activity.item.requestFocus();
 		} else {
 			Exception exception = status.getException();
 
