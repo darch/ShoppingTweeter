@@ -9,19 +9,6 @@ public class ShoppingItem implements Serializable {
 
 	private static final long serialVersionUID = -2742100531093262990L;
 
-	// テーブル名
-	public static final String TABLE_SHOPPING_HISTORY = "shopping_history";
-
-	// カラム名
-	private static final int CLUMN_NUM = 7;
-	public static final String COLUMN_ITEM_NAME = "item_name";
-	public static final String COLUMN_EXPENSE = "expense";
-	public static final String COLUMN_CATEGORY = "category";
-	public static final String COLUMN_COMMENT = "comment";
-	public static final String COLUMN_CREDITCARD = "creditcard";
-	public static final String COLUMN_SECRET = "secret";
-	public static final String COLUMN_TWEET_DATE = "tweet_date";
-
 	// カラムデータ
 	ContentValues values;
 
@@ -37,45 +24,91 @@ public class ShoppingItem implements Serializable {
 	 * @param expense
 	 */
 	public ShoppingItem(String item_name, int expense) {
-		values = new ContentValues(CLUMN_NUM);
-		values.put(COLUMN_ITEM_NAME, item_name);
-		values.put(COLUMN_EXPENSE, expense);
-		values.put(COLUMN_CATEGORY, R.string.category_other);
-		values.put(COLUMN_CREDITCARD, false);
-		values.put(COLUMN_SECRET, false);
-		values.put(COLUMN_TWEET_DATE, System.currentTimeMillis());
+		values = new ContentValues(HistoryTableDAO.COLUMNS.length);
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_ITEM_NAME], item_name);
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_EXPENSE], expense);
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_CATEGORY], R.string.category_other);
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_CREDITCARD], false);
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_SECRET], false);
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_TWEET_DATE], System.currentTimeMillis());
 	}
 
-	public void setCategory(int category) {
-		values.put(COLUMN_CATEGORY, category);
+	/**
+	 * コンストラクタ<br>
+	 * 商品名：指定値<br>
+	 * 金額：指定値<br>
+	 * カテゴリ：指定値<br>
+	 * クレジットカード：指定値<br>
+	 * シークレット：指定値
+	 * 
+	 * @param item_name
+	 * @param expense
+	 */
+	public ShoppingItem(String item_name, int expense, String category, boolean creditcard, boolean secret,
+			long tweet_date) {
+		values = new ContentValues(HistoryTableDAO.COLUMNS.length);
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_ITEM_NAME], item_name);
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_EXPENSE], expense);
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_CATEGORY], category);
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_CREDITCARD], creditcard);
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_SECRET], secret);
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_TWEET_DATE], tweet_date);
+	}
+
+	public String getItemName() {
+		return values.getAsString(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_ITEM_NAME]);
+	}
+
+	public int getExpense() {
+		return values.getAsInteger(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_EXPENSE]);
+	}
+
+	public String getCategory() {
+		return values.getAsString(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_CATEGORY]);
+	}
+
+	public void setCategory(String category) {
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_CATEGORY], category);
+	}
+
+	public String getComment() {
+		return values.getAsString(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_COMMENT]);
 	}
 
 	public void setComment(String comment) {
-		values.put(COLUMN_COMMENT, comment);
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_COMMENT], comment);
+	}
+
+	public boolean getUseCreditCard() {
+		return values.getAsBoolean(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_CREDITCARD]);
 	}
 
 	public void setUseCreditCard(boolean useCreditCard) {
-		values.put(COLUMN_CREDITCARD, useCreditCard);
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_CREDITCARD], useCreditCard);
+	}
+
+	public boolean getSecret() {
+		return values.getAsBoolean(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_SECRET]);
 	}
 
 	public void setSecret(boolean isSecret) {
-		values.put(COLUMN_SECRET, isSecret);
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_SECRET], isSecret);
 	}
 
 	@Override
 	public String toString() {
-		StringBuffer buf = new StringBuffer(COLUMN_ITEM_NAME);
-		buf.append(":").append(values.get(COLUMN_ITEM_NAME)).append("\n")
-				.append(COLUMN_EXPENSE).append(":").append(
-						values.get(COLUMN_EXPENSE)).append("\n").append(
-						COLUMN_CATEGORY).append(":").append(
-						values.get(COLUMN_CATEGORY)).append("\n").append(
-						COLUMN_CREDITCARD).append(":").append(
-						values.get(COLUMN_CREDITCARD)).append("\n").append(
-						COLUMN_SECRET).append(":").append(
-						values.get(COLUMN_SECRET)).append("\n").append(
-						COLUMN_TWEET_DATE).append(":").append(
-						values.get(COLUMN_TWEET_DATE)).append("\n");
+		StringBuffer buf = new StringBuffer(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_ITEM_NAME]);
+		buf.append(":").append(values.get(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_ITEM_NAME])).append("\n")
+				.append(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_EXPENSE]).append(":")
+				.append(values.get(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_EXPENSE])).append("\n")
+				.append(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_CATEGORY]).append(":")
+				.append(values.get(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_CATEGORY])).append("\n")
+				.append(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_CREDITCARD]).append(":")
+				.append(values.get(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_CREDITCARD])).append("\n")
+				.append(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_SECRET]).append(":")
+				.append(values.get(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_SECRET])).append("\n")
+				.append(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_TWEET_DATE]).append(":")
+				.append(values.get(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_TWEET_DATE])).append("\n");
 
 		return buf.toString();
 	}

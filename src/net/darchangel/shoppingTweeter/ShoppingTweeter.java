@@ -70,8 +70,7 @@ public class ShoppingTweeter extends Activity {
 			tweet.setEnabled(false);
 
 			// ログインするようメッセージを表示
-			Toast.makeText(ShoppingTweeter.this, R.string.please_login,
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(ShoppingTweeter.this, R.string.please_login, Toast.LENGTH_LONG).show();
 
 		} else {
 			// ログイン済みの場合
@@ -97,9 +96,16 @@ public class ShoppingTweeter extends Activity {
 	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent = null;
 		switch (item.getItemId()) {
 		case R.id.menu_pref:
-			Intent intent = new Intent(this, (Class<?>) Pref.class);
+			// preferenceメニューが押された場合
+			intent = new Intent(this, (Class<?>) Pref.class);
+			startActivity(intent);
+			return false;
+		case R.id.history:
+			// historyメニューが押された場合
+			intent = new Intent(this, (Class<?>) History.class);
 			startActivity(intent);
 			return false;
 		}

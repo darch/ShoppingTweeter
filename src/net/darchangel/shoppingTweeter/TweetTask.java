@@ -18,7 +18,7 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 	private String item;
 	private String expense;
 	private String comment;
-	private int category;
+	private String category;
 	private boolean creditcard;
 	private boolean secret;
 
@@ -32,7 +32,7 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 		item = this.activity.item.getText().toString();
 		expense = this.activity.expense.getText().toString();
 		comment = this.activity.comment.getText().toString();
-		category = this.activity.category.getSelectedItemPosition();
+		category = this.activity.category.getSelectedItem().toString();
 		creditcard = this.activity.creditcard.isChecked();
 		secret = this.activity.secret.isChecked();
 	}
@@ -68,8 +68,7 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 		activity.setProgressBarIndeterminateVisibility(false);
 
 		if (status.isSuccess()) {
-			Toast.makeText(activity, R.string.tweet_success, Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(activity, R.string.tweet_success, Toast.LENGTH_LONG).show();
 
 			// フォームをリセット
 			activity.clearForm();
@@ -83,37 +82,26 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 				NoInputException e = (NoInputException) exception;
 
 				// 必須項目が入力されていなかった場合
-				Toast.makeText(
-						activity,
-						String
-								.format(activity
-										.getString(R.string.necessary_msg), e
-										.getName()), Toast.LENGTH_SHORT).show();
+				Toast.makeText(activity, String.format(activity.getString(R.string.necessary_msg), e.getName()),
+						Toast.LENGTH_SHORT).show();
 
 			} else if (exception instanceof NumberFormatException) {
 				NumberFormatException e = (NumberFormatException) exception;
 
 				// expenseに数字以外が入力されていた場合
-				Toast.makeText(activity,
-						activity.getString(R.string.only_number),
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(activity, activity.getString(R.string.only_number), Toast.LENGTH_SHORT).show();
 
 			} else if (exception instanceof TooLongException) {
 				TooLongException e = (TooLongException) exception;
 
 				// 入力内容が規定文字数より長い場合
-				Toast.makeText(
-						activity,
-						String.format(
-								activity.getString(R.string.too_long_msg), e
-										.getLength()), Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(activity, String.format(activity.getString(R.string.too_long_msg), e.getLength()),
+						Toast.LENGTH_SHORT).show();
 			} else if (exception instanceof TwitterException) {
 				TwitterException e = (TwitterException) exception;
 
 				// Tweetに失敗した場合
-				Toast.makeText(activity, R.string.tweet_fail,
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(activity, R.string.tweet_fail, Toast.LENGTH_SHORT).show();
 
 			}
 		}
@@ -236,8 +224,7 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 			tweet_str += " " + comment;
 		}
 
-		if (!activity.getString(R.string.category_other).equals(
-				activity.category.getSelectedItem().toString())) {
+		if (!activity.getString(R.string.category_other).equals(activity.category.getSelectedItem().toString())) {
 			// カテゴリがother以外の場合はハッシュタグとしてつぶやきに追加
 			tweet_str += " #" + activity.category.getSelectedItem().toString();
 		}
@@ -258,8 +245,7 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 	 */
 	private void checkTweetLength(String str) throws TooLongException {
 		// 規定文字数を取得
-		int tweet_length = Integer.parseInt(activity
-				.getString(R.string.tweet_length));
+		int tweet_length = Integer.parseInt(activity.getString(R.string.tweet_length));
 
 		if (str.length() > tweet_length) {
 			// Tweet内容が規定文字数を超える場合
@@ -278,18 +264,14 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 	 */
 	private twitter4j.Status tweet(String str) throws TwitterException {
 		// AccessTokenの取得
-		AccessToken accessToken = new AccessToken(Pref.getOauthToken(activity),
-				Pref.getOauthTokenSecret(activity));
+		AccessToken accessToken = new AccessToken(Pref.getOauthToken(activity), Pref.getOauthTokenSecret(activity));
 
 		// Consumer keyとConsumer secretを設定
 		ConfigurationBuilder confbuilder = new ConfigurationBuilder();
-		confbuilder.setOAuthConsumerKey(activity
-				.getString(R.string.consumer_key));
-		confbuilder.setOAuthConsumerSecret(activity
-				.getString(R.string.consumer_secret));
+		confbuilder.setOAuthConsumerKey(activity.getString(R.string.consumer_key));
+		confbuilder.setOAuthConsumerSecret(activity.getString(R.string.consumer_secret));
 
-		Twitter twitter = new TwitterFactory(confbuilder.build())
-				.getInstance(accessToken);
+		Twitter twitter = new TwitterFactory(confbuilder.build()).getInstance(accessToken);
 		return twitter.updateStatus(str);
 	}
 }
