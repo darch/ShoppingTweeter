@@ -24,6 +24,7 @@ public class HistoryTableDAO {
 	public static final int COLUMN_TWEET_DATE = 6;
 
 	private SQLiteDatabase db = null;
+	private Cursor cursor = null;
 
 	public HistoryTableDAO(SQLiteDatabase db) {
 		this.db = db;
@@ -39,6 +40,10 @@ public class HistoryTableDAO {
 		db.insert(TABLE_SHOPPING_HISTORY, null, value);
 	}
 
+	public void add(ShoppingItem item) {
+		add(item.getValue());
+	}
+
 	/**
 	 * 履歴テーブルから全レコードを取得
 	 * 
@@ -46,7 +51,6 @@ public class HistoryTableDAO {
 	 */
 	public List<ShoppingItem> selectAll() {
 		ArrayList<ShoppingItem> result = new ArrayList<ShoppingItem>();
-		Cursor cursor;
 
 		if (db != null) {
 			// データベースオブジェクトがnullではない場合
@@ -79,6 +83,47 @@ public class HistoryTableDAO {
 			}
 		}
 
+		closeCursor();
+
 		return result;
+	}
+
+	/**
+	 * 履歴テーブルに登録されているデータ件数を取得
+	 * 
+	 * @return 履歴テーブルの登録件数
+	 */
+	public int getRecordCount() {
+		int rowNum = 0;
+
+		if (db != null) {
+			// 件数を取得
+			cursor = db.query(TABLE_SHOPPING_HISTORY, null, null, null, null, null, null);
+
+			rowNum = cursor.getCount();
+		}
+
+		closeCursor();
+
+		return rowNum;
+	}
+
+	public void deleteRecord(int maxRowNum) {
+		List<ShoppingItem> items = selectAll();
+
+		while (items.size() > maxRowNum) {
+			// 登録件数が最大登録件数を超えている場合
+			ShoppingItem item = items.get(0);
+			db.delete(TABLE_SHOPPING_HISTORY, COLUMNS[COLUMN_TWEET_DATE] + " = ?",
+					new String[] { Long.toString(item.getTweetDate()) });
+			items.remove(item);
+		}
+	}
+
+	private void closeCursor() {
+		if (cursor != null) {
+			cursor.close();
+			cursor = null;
+		}
 	}
 }

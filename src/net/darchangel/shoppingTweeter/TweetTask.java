@@ -2,13 +2,16 @@ package net.darchangel.shoppingTweeter;
 
 import net.darchangel.shoppingTweeter.exception.NoInputException;
 import net.darchangel.shoppingTweeter.exception.TooLongException;
+import net.darchangel.shoppingTweeter.util.HistoryTableDAO;
 import net.darchangel.shoppingTweeter.util.ShoppingItem;
+import net.darchangel.shoppingTweeter.util.ShoppingTweeterDBHelper;
 import net.darchangel.shoppingTweeter.util.TweetTaskStatus;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.conf.ConfigurationBuilder;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -142,6 +145,8 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 			ShoppingItem.setUseCreditCard(creditcard);
 			ShoppingItem.setSecret(secret);
 
+			registHistory();
+
 		} catch (NoInputException e) {
 			// 必須項目が入力されていなかった場合
 
@@ -162,6 +167,24 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 
 		}
 		return tweet_str;
+	}
+
+	/**
+	 * 購入品目を履歴テーブルに追加
+	 */
+	private void registHistory() {
+		// 履歴に登録
+		ShoppingTweeterDBHelper dbHelper = new ShoppingTweeterDBHelper(activity);
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		HistoryTableDAO historyTableDAO = new HistoryTableDAO(db);
+		historyTableDAO.add(ShoppingItem);
+
+		// 登録レコード数が10件を超えた場合
+		// TODO 登録レコード数の上限を設定可能にする
+		int maxRowNum = 1;
+		if (historyTableDAO.getRecordCount() > maxRowNum) {
+			historyTableDAO.deleteRecord(maxRowNum);
+		}
 	}
 
 	/**

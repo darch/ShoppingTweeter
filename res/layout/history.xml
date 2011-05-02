@@ -18,13 +18,15 @@
 				android:layout_height="fill_parent"
 				android:id="@+id/header_item"
 				android:text="@string/header_item"
-				android:textStyle="bold"></TextView>
+				android:textStyle="bold"
+				android:textSize="20sp"></TextView>
 			<TextView
 				android:layout_width="fill_parent"
 				android:layout_height="fill_parent"
 				android:id="@+id/header_expense"
 				android:text="@string/header_expense"
-				android:textStyle="bold"></TextView>
+				android:textStyle="bold"
+				android:textSize="20sp"></TextView>
 		</TableRow>
 	</TableLayout>
 </ScrollView>

@@ -1,5 +1,6 @@
 package net.darchangel.shoppingTweeter;
 
+import net.darchangel.shoppingTweeter.util.HistoryTableDAO;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 
 public class ShoppingTweeter extends Activity {
 
+	private static final int REQUEST_HISTORY = 0;
+
 	EditText item = null;
 	EditText expense = null;
 	EditText comment = null;
@@ -28,6 +31,7 @@ public class ShoppingTweeter extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.main);
 
@@ -44,6 +48,7 @@ public class ShoppingTweeter extends Activity {
 
 		// ボタンのコールバックリスナーを登録
 		setAction();
+
 	}
 
 	@Override
@@ -106,10 +111,20 @@ public class ShoppingTweeter extends Activity {
 		case R.id.history:
 			// historyメニューが押された場合
 			intent = new Intent(this, (Class<?>) History.class);
-			startActivity(intent);
+			startActivityForResult(intent, REQUEST_HISTORY);
 			return false;
 		}
 		return true;
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		// 履歴画面からIntentを受信している場合
+		if (requestCode == REQUEST_HISTORY && resultCode == RESULT_OK) {
+			// 品目名を入力
+			item.setText(intent.getStringExtra(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_ITEM_NAME]));
+			// 金額を入力
+			expense.setText(intent.getStringExtra(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_EXPENSE]));
+		}
 	}
 
 	/**

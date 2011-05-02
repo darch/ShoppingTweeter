@@ -17,8 +17,6 @@ public class ShoppingTweeterDBHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE " + HistoryTableDAO.TABLE_SHOPPING_HISTORY + " (item_name TEXT, "
 				+ "expense INTEGER, category TEXT, comment TEXT, "
 				+ "creditcard INTEGER, secret INTEGER, tweet_date LONG);");
-
-		db.execSQL("insert into " + HistoryTableDAO.TABLE_SHOPPING_HISTORY + " values ('品目1', 100, 'other', '', 0, 0, 0);");
 	}
 
 	@Override

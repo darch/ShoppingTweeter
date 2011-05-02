@@ -10,7 +10,7 @@ public class ShoppingItem implements Serializable {
 	private static final long serialVersionUID = -2742100531093262990L;
 
 	// カラムデータ
-	ContentValues values;
+	private ContentValues values;
 
 	/**
 	 * コンストラクタ<br>
@@ -55,6 +55,10 @@ public class ShoppingItem implements Serializable {
 		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_TWEET_DATE], tweet_date);
 	}
 
+	public ContentValues getValue() {
+		return values;
+	}
+
 	public String getItemName() {
 		return values.getAsString(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_ITEM_NAME]);
 	}
@@ -93,6 +97,10 @@ public class ShoppingItem implements Serializable {
 
 	public void setSecret(boolean isSecret) {
 		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_SECRET], isSecret);
+	}
+
+	public long getTweetDate() {
+		return values.getAsLong(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_TWEET_DATE]);
 	}
 
 	@Override
