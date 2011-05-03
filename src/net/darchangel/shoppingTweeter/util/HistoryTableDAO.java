@@ -74,6 +74,11 @@ public class HistoryTableDAO {
 
 				// 取得レコードをShoppingItem型に変換
 				ShoppingItem item = new ShoppingItem(cursor.getString(COLUMN_ITEM_NAME), cursor.getInt(COLUMN_EXPENSE));
+				item.setCategory(cursor.getString(COLUMN_CATEGORY));
+				item.setComment(cursor.getString(COLUMN_COMMENT));
+				item.setUseCreditCard(cursor.getInt(COLUMN_CREDITCARD));
+				item.setSecret(cursor.getInt(COLUMN_SECRET));
+				item.setTweetDate(cursor.getLong(COLUMN_TWEET_DATE));
 
 				// レコードを結果リストに追加
 				result.add(item);

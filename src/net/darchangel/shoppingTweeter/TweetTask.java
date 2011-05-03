@@ -173,18 +173,17 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 	 * 購入品目を履歴テーブルに追加
 	 */
 	private void registHistory() {
+		// TODO 履歴の無効化
+
 		// 履歴に登録
-		ShoppingTweeterDBHelper dbHelper = new ShoppingTweeterDBHelper(activity);
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		ShoppingTweeterDBHelper dbHelper = new ShoppingTweeterDBHelper(activity.getApplicationContext());
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		HistoryTableDAO historyTableDAO = new HistoryTableDAO(db);
 		historyTableDAO.add(ShoppingItem);
 
-		// 登録レコード数が10件を超えた場合
-		// TODO 登録レコード数の上限を設定可能にする
-		int maxRowNum = 1;
-		if (historyTableDAO.getRecordCount() > maxRowNum) {
-			historyTableDAO.deleteRecord(maxRowNum);
-		}
+		// 登録レコード数を調整
+		int maxRowNum = Pref.getHistorySize(activity);
+		historyTableDAO.deleteRecord(maxRowNum);
 	}
 
 	/**

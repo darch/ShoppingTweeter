@@ -117,6 +117,9 @@ public class ShoppingTweeter extends Activity {
 		return true;
 	}
 
+	/**
+	 * 履歴画面からも戻ってきた場合の設定
+	 */
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		// 履歴画面からIntentを受信している場合
 		if (requestCode == REQUEST_HISTORY && resultCode == RESULT_OK) {
@@ -124,6 +127,7 @@ public class ShoppingTweeter extends Activity {
 			item.setText(intent.getStringExtra(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_ITEM_NAME]));
 			// 金額を入力
 			expense.setText(intent.getStringExtra(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_EXPENSE]));
+			// TODO ほかの項目も履歴から戻す？
 		}
 	}
 

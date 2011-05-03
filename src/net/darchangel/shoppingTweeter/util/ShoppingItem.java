@@ -9,6 +9,9 @@ public class ShoppingItem implements Serializable {
 
 	private static final long serialVersionUID = -2742100531093262990L;
 
+	private static final int USE_CREDITCARD = 1;
+	private static final int IS_SECRET = 1;
+
 	// カラムデータ
 	private ContentValues values;
 
@@ -91,6 +94,14 @@ public class ShoppingItem implements Serializable {
 		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_CREDITCARD], useCreditCard);
 	}
 
+	public void setUseCreditCard(int useCreditCard) {
+		if (useCreditCard == USE_CREDITCARD) {
+			setUseCreditCard(true);
+		} else {
+			setUseCreditCard(false);
+		}
+	}
+
 	public boolean getSecret() {
 		return values.getAsBoolean(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_SECRET]);
 	}
@@ -99,8 +110,20 @@ public class ShoppingItem implements Serializable {
 		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_SECRET], isSecret);
 	}
 
+	public void setSecret(int isSecret) {
+		if (isSecret == IS_SECRET) {
+			setSecret(true);
+		} else {
+			setSecret(false);
+		}
+	}
+
 	public long getTweetDate() {
 		return values.getAsLong(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_TWEET_DATE]);
+	}
+
+	public void setTweetDate(long tweetDate) {
+		values.put(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_TWEET_DATE], tweetDate);
 	}
 
 	@Override

@@ -22,6 +22,15 @@
 			android:summary="@string/default_secret_sum" />
 	</PreferenceCategory>
 	<PreferenceCategory
+		android:title="@string/pref_category_history">
+		<ListPreference
+			android:key="@string/history_size_key"
+			android:title="@string/history_size_title"
+			android:summary="@string/history_size_sum"
+			android:entries="@array/history_size_list"
+			android:entryValues="@array/history_size_list" />
+	</PreferenceCategory>
+	<PreferenceCategory
 		android:title="@string/pref_category_auth">
 		<Preference
 			android:key="@string/pref_login_key"

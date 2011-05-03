@@ -92,6 +92,14 @@
 	<string
 		name="default_secret_sum">set secret default</string>
 	<string
+		name="pref_category_history">History</string>
+	<string
+		name="history_size_key">pref_history_size</string>
+	<string
+		name="history_size_title">Size</string>
+	<string
+		name="history_size_sum">History data size</string>
+	<string
 		name="pref_category_auth">Auth</string>
 	<string
 		name="pref_login_key">login</string>

@@ -27,7 +27,7 @@ public class History extends Activity {
 
 		historyTable = (TableLayout) findViewById(R.id.history_table);
 
-		ShoppingTweeterDBHelper dbHelper = new ShoppingTweeterDBHelper(this);
+		ShoppingTweeterDBHelper dbHelper = new ShoppingTweeterDBHelper(getApplicationContext());
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 		historyTableDAO = new HistoryTableDAO(db);
 

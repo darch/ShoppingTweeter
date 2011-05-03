@@ -69,8 +69,7 @@ public class Pref extends PreferenceActivity {
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode,
-			Intent intent) {
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
 		if (resultCode == RESULT_OK) {
 			super.onActivityResult(requestCode, resultCode, intent);
@@ -79,22 +78,16 @@ public class Pref extends PreferenceActivity {
 
 			try {
 				// OAuthAccessTokenを取得
-				accessToken = twitter.getOAuthAccessToken(requestToken, intent
-						.getExtras().getString(
-								getString(R.string.twitter_oauth_verifier)));
+				accessToken = twitter.getOAuthAccessToken(requestToken,
+						intent.getExtras().getString(getString(R.string.twitter_oauth_verifier)));
 
-				SharedPreferences pref = getSharedPreferences(
-						getString(R.string.twitter_prefs_key), MODE_PRIVATE);
+				SharedPreferences pref = getSharedPreferences(getString(R.string.twitter_prefs_key), MODE_PRIVATE);
 
 				// SharedPreferenceにOAuthAccessTokenを記録
 				SharedPreferences.Editor editor = pref.edit();
-				editor.putString(getString(R.string.twitter_oauth_token_key),
-						accessToken.getToken());
-				editor.putString(
-						getString(R.string.twitter_oauth_token_secret_key),
-						accessToken.getTokenSecret());
-				editor.putString(getString(R.string.twitter_connect_key),
-						getString(R.string.status_connected));
+				editor.putString(getString(R.string.twitter_oauth_token_key), accessToken.getToken());
+				editor.putString(getString(R.string.twitter_oauth_token_secret_key), accessToken.getTokenSecret());
+				editor.putString(getString(R.string.twitter_connect_key), getString(R.string.status_connected));
 
 				editor.commit();
 
@@ -147,8 +140,7 @@ public class Pref extends PreferenceActivity {
 	private boolean isConnected(String status) {
 		boolean result = false;
 
-		if (status != null
-				&& status.equals(getString(R.string.status_connected))) {
+		if (status != null && status.equals(getString(R.string.status_connected))) {
 			// statusがnullじゃなく、かつ"connected"の場合はログイン済み
 			return true;
 		}
@@ -172,8 +164,7 @@ public class Pref extends PreferenceActivity {
 
 		// requestTokenの取得
 		try {
-			requestToken = twitter
-					.getOAuthRequestToken(getString(R.string.callback_url));
+			requestToken = twitter.getOAuthRequestToken(getString(R.string.callback_url));
 		} catch (TwitterException e) {
 			e.printStackTrace();
 		}
@@ -181,8 +172,7 @@ public class Pref extends PreferenceActivity {
 		// 認証用URLをインテントにセット。
 		// TwitterLoginはActivityのクラス名。
 		Intent intent = new Intent(this, TwitterLogin.class);
-		intent.putExtra(getString(R.string.auth_url), requestToken
-				.getAuthorizationURL());
+		intent.putExtra(getString(R.string.auth_url), requestToken.getAuthorizationURL());
 
 		// アクティビティを起動
 		this.startActivityForResult(intent, REQUEST_AUTH);
@@ -194,8 +184,7 @@ public class Pref extends PreferenceActivity {
 	 */
 	private void disconnectTwitter() {
 
-		SharedPreferences pref = getSharedPreferences(
-				getString(R.string.twitter_prefs_key), MODE_PRIVATE);
+		SharedPreferences pref = getSharedPreferences(getString(R.string.twitter_prefs_key), MODE_PRIVATE);
 
 		SharedPreferences.Editor editor = pref.edit();
 		editor.remove(getString(R.string.twitter_oauth_token_key));
@@ -213,10 +202,8 @@ public class Pref extends PreferenceActivity {
 	 * @return
 	 */
 	public static boolean useCurrencyMark(Context context) {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		return prefs.getBoolean(context
-				.getString(R.string.currency_mark_use_key), false);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		return prefs.getBoolean(context.getString(R.string.currency_mark_use_key), false);
 	}
 
 	/**
@@ -226,11 +213,9 @@ public class Pref extends PreferenceActivity {
 	 * @return
 	 */
 	public static String getCurrencyMark(Context context) {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		return prefs.getString(context
-				.getString(R.string.currency_mark_type_key), context
-				.getString(R.string.currency_mark_type_dolar));
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		return prefs.getString(context.getString(R.string.currency_mark_type_key),
+				context.getString(R.string.currency_mark_type_dolar));
 	}
 
 	/**
@@ -240,10 +225,20 @@ public class Pref extends PreferenceActivity {
 	 * @return
 	 */
 	public static boolean getDefaultSecret(Context context) {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		return prefs.getBoolean(context.getString(R.string.default_secret_key),
-				false);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		return prefs.getBoolean(context.getString(R.string.default_secret_key), false);
+	}
+
+	/**
+	 * History Sizeの設定値取得メソッド
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public static int getHistorySize(Context context) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		String historySize = prefs.getString(context.getString(R.string.history_size_key), "10");
+		return Integer.parseInt(historySize);
 	}
 
 	/**
@@ -253,11 +248,10 @@ public class Pref extends PreferenceActivity {
 	 * @return
 	 */
 	public static String getStatus(Context context) {
-		SharedPreferences prefs = context.getSharedPreferences(context
-				.getString(R.string.twitter_prefs_key), MODE_PRIVATE);
+		SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.twitter_prefs_key),
+				MODE_PRIVATE);
 
-		return prefs.getString(context.getString(R.string.twitter_connect_key),
-				"");
+		return prefs.getString(context.getString(R.string.twitter_connect_key), "");
 	}
 
 	/**
@@ -267,11 +261,10 @@ public class Pref extends PreferenceActivity {
 	 * @return
 	 */
 	public static String getOauthToken(Context context) {
-		SharedPreferences prefs = context.getSharedPreferences(context
-				.getString(R.string.twitter_prefs_key), MODE_PRIVATE);
+		SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.twitter_prefs_key),
+				MODE_PRIVATE);
 
-		return prefs.getString(context
-				.getString(R.string.twitter_oauth_token_key), "");
+		return prefs.getString(context.getString(R.string.twitter_oauth_token_key), "");
 	}
 
 	/**
@@ -281,10 +274,9 @@ public class Pref extends PreferenceActivity {
 	 * @return
 	 */
 	public static String getOauthTokenSecret(Context context) {
-		SharedPreferences prefs = context.getSharedPreferences(context
-				.getString(R.string.twitter_prefs_key), MODE_PRIVATE);
+		SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.twitter_prefs_key),
+				MODE_PRIVATE);
 
-		return prefs.getString(context
-				.getString(R.string.twitter_oauth_token_secret_key), "");
+		return prefs.getString(context.getString(R.string.twitter_oauth_token_secret_key), "");
 	}
 }
