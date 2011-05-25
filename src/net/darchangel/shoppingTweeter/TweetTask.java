@@ -73,6 +73,9 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 		if (status.isSuccess()) {
 			Toast.makeText(activity, R.string.tweet_success, Toast.LENGTH_LONG).show();
 
+			// 履歴に登録
+			registHistory();
+
 			// フォームをリセット
 			activity.clearForm();
 
@@ -144,8 +147,6 @@ public class TweetTask extends AsyncTask<Void, Void, TweetTaskStatus> {
 			ShoppingItem.setCategory(category);
 			ShoppingItem.setUseCreditCard(creditcard);
 			ShoppingItem.setSecret(secret);
-
-			registHistory();
 
 		} catch (NoInputException e) {
 			// 必須項目が入力されていなかった場合
