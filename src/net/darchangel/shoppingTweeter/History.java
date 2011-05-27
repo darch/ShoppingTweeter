@@ -8,8 +8,10 @@ import net.darchangel.shoppingTweeter.util.ShoppingTweeterDBHelper;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -49,15 +51,30 @@ public class History extends Activity {
 			TableRow row = new TableRow(this);
 			row.setId(row_id++);
 
+			TableRow.LayoutParams item_layout = new TableRow.LayoutParams();
+			item_layout.weight = (float) 0.75;
+			item_layout.width = 0;
+			item_layout.setMargins(1, 1, 1, 1);
+
+			TableRow.LayoutParams expense_layout = new TableRow.LayoutParams();
+			expense_layout.weight = (float) 0.25;
+			expense_layout.width = 0;
+			expense_layout.setMargins(1, 1, 1, 1);
+
 			// 品目名を取得
 			TextView item = new TextView(this);
 			item.setText(shoppingItem.getItemName());
 			item.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+			item.setBackgroundColor(Color.BLACK);
+			item.setLayoutParams(item_layout);
 
 			// 金額を取得
 			TextView expense = new TextView(this);
 			expense.setText(Integer.toString((shoppingItem.getExpense())));
 			expense.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+			expense.setGravity(Gravity.RIGHT);
+			expense.setBackgroundColor(Color.BLACK);
+			expense.setLayoutParams(expense_layout);
 
 			// 取得した値を行に追加
 			row.addView(item);
@@ -86,7 +103,7 @@ public class History extends Activity {
 				intent.putExtra(HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_EXPENSE], expense.getText());
 				setResult(Activity.RESULT_OK, intent);
 
-				// 履歴画面を終了 
+				// 履歴画面を終了
 				finish();
 			}
 		});
