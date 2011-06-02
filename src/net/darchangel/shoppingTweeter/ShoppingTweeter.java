@@ -169,6 +169,11 @@ public class ShoppingTweeter extends Activity {
 		comment.setText("");
 		category.setSelection(0);
 		creditcard.setChecked(false);
-		secret.setChecked(false);
+
+		if (Pref.getDefaultSecret(ShoppingTweeter.this)) {
+			secret.setChecked(true);
+		} else {
+			secret.setChecked(false);
+		}
 	}
 }
