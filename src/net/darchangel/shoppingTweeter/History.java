@@ -7,9 +7,11 @@ import net.darchangel.shoppingTweeter.util.ShoppingItem;
 import net.darchangel.shoppingTweeter.util.ShoppingTweeterDBHelper;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -22,6 +24,9 @@ public class History extends Activity {
 	private TableLayout historyTable;
 	private static HistoryTableDAO historyTableDAO;
 
+	// ヘッダを含まないデータの行数
+	int row_num = 0;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,27 +34,65 @@ public class History extends Activity {
 
 		historyTable = (TableLayout) findViewById(R.id.history_table);
 
-		ShoppingTweeterDBHelper dbHelper = new ShoppingTweeterDBHelper(getApplicationContext());
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		historyTableDAO = new HistoryTableDAO(db);
+		createHistoryTable();
 
-		List<ShoppingItem> historyList = historyTableDAO.selectAll();
-		createHistoryTable(historyTable, historyList);
+		TextView header_item = (TextView) findViewById(R.id.header_item);
+		header_item.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// SharedPreferenceのSortOrderにitem_nameを設定
+				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(History.this);
+				SharedPreferences.Editor editor = pref.edit();
+				editor.putString(getString(R.string.sort_order),
+						HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_ITEM_NAME]);
+				editor.commit();
+
+				createHistoryTable();
+			}
+		});
+		
+		TextView header_expense = (TextView) findViewById(R.id.header_expense);
+		header_expense.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// SharedPreferenceのSortOrderにitem_expenseを設定
+				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(History.this);
+				SharedPreferences.Editor editor = pref.edit();
+				editor.putString(getString(R.string.sort_order),
+						HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_EXPENSE]);
+				editor.commit();
+
+				createHistoryTable();
+			}
+		});
+		
 	}
 
 	/**
 	 * リストからテーブルを作成する
 	 * 
-	 * @param table
-	 *            テーブルレイアウト
-	 * @param list
-	 *            履歴リスト
 	 */
-	private void createHistoryTable(TableLayout table, List<ShoppingItem> list) {
-		int row_id = 0;
-		for (ShoppingItem shoppingItem : list) {
+	private void createHistoryTable() {
+		ShoppingTweeterDBHelper dbHelper = new ShoppingTweeterDBHelper(getApplicationContext());
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		historyTableDAO = new HistoryTableDAO(db);
+
+		// ソート順を取得
+		String sortOrder = Pref.getSortOrder(this);
+
+		// 履歴テーブルからデータを取得
+		List<ShoppingItem> historyList = historyTableDAO.selectAll(sortOrder);
+
+		// 既存のTableLayoutを初期化
+		if (row_num != 0) {
+			cleanHistoryTable();
+		}
+
+		for (ShoppingItem shoppingItem : historyList) {
 			TableRow row = new TableRow(this);
-			row.setId(row_id++);
+			row.setId(row_num++);
 
 			TableRow.LayoutParams item_layout = new TableRow.LayoutParams();
 			item_layout.weight = (float) 0.75;
@@ -84,11 +127,16 @@ public class History extends Activity {
 			setActionEachRow(row);
 
 			// 作成した行をテーブルに追加
-			table.addView(row);
+			historyTable.addView(row);
 
 		}
 	}
 
+	/**
+	 * Viewにアクションを付加する。
+	 * 
+	 * @param v
+	 */
 	private void setActionEachRow(View v) {
 		v.setOnClickListener(new View.OnClickListener() {
 
@@ -107,5 +155,15 @@ public class History extends Activity {
 				finish();
 			}
 		});
+	}
+
+	/**
+	 * 履歴テーブルをヘッダ以外削除する。
+	 */
+	private void cleanHistoryTable() {
+		// TableLayoutの行を削除(ヘッダは消さないためstartを1に指定。)
+		historyTable.removeViews(1, row_num);
+		// 行数を初期化
+		row_num = 0;
 	}
 }

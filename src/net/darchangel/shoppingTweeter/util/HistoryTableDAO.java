@@ -49,7 +49,7 @@ public class HistoryTableDAO {
 	 * 
 	 * @return 全レコード
 	 */
-	public List<ShoppingItem> selectAll() {
+	public List<ShoppingItem> selectAll(String orderBy) {
 		ArrayList<ShoppingItem> result = new ArrayList<ShoppingItem>();
 
 		if (db != null) {
@@ -61,7 +61,7 @@ public class HistoryTableDAO {
 					COLUMNS[COLUMN_SECRET], COLUMNS[COLUMN_TWEET_DATE] };
 
 			// 履歴テーブルから全レコードを取得
-			cursor = db.query(TABLE_SHOPPING_HISTORY, select, null, null, null, null, COLUMNS[COLUMN_TWEET_DATE]);
+			cursor = db.query(TABLE_SHOPPING_HISTORY, select, null, null, null, null, orderBy);
 
 			// 取得件数を取得
 			int rowNum = cursor.getCount();
@@ -114,7 +114,7 @@ public class HistoryTableDAO {
 	}
 
 	public void deleteRecord(int maxRowNum) {
-		List<ShoppingItem> items = selectAll();
+		List<ShoppingItem> items = selectAll(null);
 
 		while (items.size() > maxRowNum) {
 			// 登録件数が最大登録件数を超えている場合

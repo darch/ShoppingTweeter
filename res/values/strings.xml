@@ -114,6 +114,8 @@
 	<string
 		name="pref_logout_title">Logout</string>
 	<string
+		name="sort_order">SortOrder</string>
+	<string
 		name="twitter_prefs_key">pref</string>
 	<string
 		name="twitter_connect_key">status</string>

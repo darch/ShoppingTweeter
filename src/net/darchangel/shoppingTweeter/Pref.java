@@ -1,5 +1,6 @@
 package net.darchangel.shoppingTweeter;
 
+import net.darchangel.shoppingTweeter.util.HistoryTableDAO;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -252,6 +253,13 @@ public class Pref extends PreferenceActivity {
 				MODE_PRIVATE);
 
 		return prefs.getString(context.getString(R.string.twitter_connect_key), "");
+	}
+
+	public static String getSortOrder(Context context) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		String sortOrder = prefs.getString(context.getString(R.string.sort_order),
+				HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_TWEET_DATE]);
+		return sortOrder;
 	}
 
 	/**
