@@ -48,6 +48,7 @@ public class History extends Activity {
 						HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_ITEM_NAME]);
 				editor.commit();
 
+				// history tableを再構築
 				createHistoryTable();
 			}
 		});
@@ -64,6 +65,7 @@ public class History extends Activity {
 						HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_EXPENSE]);
 				editor.commit();
 
+				// history tableを再構築
 				createHistoryTable();
 			}
 		});

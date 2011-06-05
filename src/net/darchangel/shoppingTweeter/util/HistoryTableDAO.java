@@ -31,17 +31,39 @@ public class HistoryTableDAO {
 	}
 
 	/**
+	 * 履歴テーブルにデータを登録/更新
+	 * 
+	 * @param item
+	 *            登録/更新するデータ
+	 */
+	public void add(ShoppingItem item) {
+		int ret = update(item.getValue(), item.getItemName());
+		if (ret == 0) {
+			add(item.getValue());
+		}
+	}
+
+	/**
 	 * 履歴テーブルに登録
 	 * 
 	 * @param value
-	 *            登録内容
+	 *            登録するデータ
 	 */
-	public void add(ContentValues value) {
+	private void add(ContentValues value) {
 		db.insert(TABLE_SHOPPING_HISTORY, null, value);
 	}
 
-	public void add(ShoppingItem item) {
-		add(item.getValue());
+	/**
+	 * 履歴テーブルを更新
+	 * 
+	 * @param value
+	 *            登録するデータ
+	 * @param item_name
+	 *            更新キー(品名)
+	 * @return 更新件数
+	 */
+	private int update(ContentValues value, String item_name) {
+		return db.update(TABLE_SHOPPING_HISTORY, value, COLUMNS[COLUMN_ITEM_NAME] + " = ?", new String[] { item_name });
 	}
 
 	/**
