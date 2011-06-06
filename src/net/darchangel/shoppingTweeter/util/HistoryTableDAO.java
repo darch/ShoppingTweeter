@@ -23,6 +23,11 @@ public class HistoryTableDAO {
 	public static final int COLUMN_SECRET = 5;
 	public static final int COLUMN_TWEET_DATE = 6;
 
+	// ソート順
+	public static final String[] SORT_BY = { "ASC", "DESC" };
+	public static final int SORT_BY_ASC = 0;
+	public static final int SORT_BYA_DESC = 1;
+
 	private SQLiteDatabase db = null;
 	private Cursor cursor = null;
 

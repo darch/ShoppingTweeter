@@ -255,10 +255,27 @@ public class Pref extends PreferenceActivity {
 		return prefs.getString(context.getString(R.string.twitter_connect_key), "");
 	}
 
-	public static String getSortOrder(Context context) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		String sortOrder = prefs.getString(context.getString(R.string.sort_order),
-				HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_TWEET_DATE]);
+	/**
+	 * ソートキー取得メソッド
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public static int getSortKey(Context context) {
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+		int sortKey = pref.getInt(context.getString(R.string.sort_key), HistoryTableDAO.COLUMN_ITEM_NAME);
+		return sortKey;
+	}
+
+	/**
+	 * ソート順取得メソッド
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public static int getSortOrder(Context context) {
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+		int sortOrder = pref.getInt(context.getString(R.string.sort_order), HistoryTableDAO.SORT_BY_ASC);
 		return sortOrder;
 	}
 

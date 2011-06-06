@@ -43,16 +43,32 @@ public class History extends Activity {
 			public void onClick(View v) {
 				// SharedPreferenceのSortOrderにitem_nameを設定
 				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(History.this);
+				int sort_key = Pref.getSortKey(History.this);
+				int sort_order = Pref.getSortOrder(History.this);
 				SharedPreferences.Editor editor = pref.edit();
-				editor.putString(getString(R.string.sort_order),
-						HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_ITEM_NAME]);
+				if (sort_key == HistoryTableDAO.COLUMN_ITEM_NAME) {
+					// ソートキーがアイテム名の場合
+					if (sort_order == HistoryTableDAO.SORT_BY_ASC) {
+						// ソートオーダが昇順の場合
+						sort_order = HistoryTableDAO.SORT_BYA_DESC;
+					} else {
+						// ソートオーダが降順の場合
+						sort_order = HistoryTableDAO.SORT_BY_ASC;
+					}
+				} else {
+					// ソートキーがアイテム名以外の場合
+					sort_key = HistoryTableDAO.COLUMN_ITEM_NAME;
+					sort_order = HistoryTableDAO.SORT_BY_ASC;
+				}
+				editor.putInt(getString(R.string.sort_key), sort_key);
+				editor.putInt(getString(R.string.sort_order), sort_order);
 				editor.commit();
 
 				// history tableを再構築
 				createHistoryTable();
 			}
 		});
-		
+
 		TextView header_expense = (TextView) findViewById(R.id.header_expense);
 		header_expense.setOnClickListener(new View.OnClickListener() {
 
@@ -60,16 +76,32 @@ public class History extends Activity {
 			public void onClick(View v) {
 				// SharedPreferenceのSortOrderにitem_expenseを設定
 				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(History.this);
+				int sort_key = Pref.getSortKey(History.this);
+				int sort_order = Pref.getSortOrder(History.this);
 				SharedPreferences.Editor editor = pref.edit();
-				editor.putString(getString(R.string.sort_order),
-						HistoryTableDAO.COLUMNS[HistoryTableDAO.COLUMN_EXPENSE]);
+				if (sort_key == HistoryTableDAO.COLUMN_EXPENSE) {
+					// ソートキーが金額の場合
+					if (sort_order == HistoryTableDAO.SORT_BY_ASC) {
+						// ソートオーダが昇順の場合
+						sort_order = HistoryTableDAO.SORT_BYA_DESC;
+					} else {
+						// ソートオーダが降順の場合
+						sort_order = HistoryTableDAO.SORT_BY_ASC;
+					}
+				} else {
+					// ソートキーが金額以外の場合
+					sort_key = HistoryTableDAO.COLUMN_EXPENSE;
+					sort_order = HistoryTableDAO.SORT_BY_ASC;
+				}
+				editor.putInt(getString(R.string.sort_key), sort_key);
+				editor.putInt(getString(R.string.sort_order), sort_order);
 				editor.commit();
 
 				// history tableを再構築
 				createHistoryTable();
 			}
 		});
-		
+
 	}
 
 	/**
@@ -82,7 +114,8 @@ public class History extends Activity {
 		historyTableDAO = new HistoryTableDAO(db);
 
 		// ソート順を取得
-		String sortOrder = Pref.getSortOrder(this);
+		String sortOrder = HistoryTableDAO.COLUMNS[Pref.getSortKey(this)] + " "
+				+ HistoryTableDAO.SORT_BY[Pref.getSortOrder(this)];
 
 		// 履歴テーブルからデータを取得
 		List<ShoppingItem> historyList = historyTableDAO.selectAll(sortOrder);
