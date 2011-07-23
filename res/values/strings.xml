@@ -1,150 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string
-		name="tweet_length">140</string>
-	<string
-		name="app_name">ShoppingTweeter</string>
-	<string
-		name="item">Item</string>
-	<string
-		name="expense">Expense</string>
-	<string
-		name="comment">Comment</string>
-	<string
-		name="category">Category</string>
-	<string
-		name="category_food">Food</string>
-	<string
-		name="category_lunch">Lunch</string>
-	<string
-		name="category_dinner">Dinner</string>
-	<string
-		name="category_alcohol">Alcohol</string>
-	<string
-		name="category_snack_cafe">Snack_Cafe</string>
-	<string
-		name="category_transport">Transport</string>
-	<string
-		name="category_stationery_tool">Stationery_Tool</string>
-	<string
-		name="category_book">Book</string>
-	<string
-		name="category_fashion">Fashion</string>
-	<string
-		name="category_beauty_health">Beauty_Health</string>
-	<string
-		name="category_hobby">Hobby</string>
-	<string
-		name="category_Household">Household</string>
-	<string
-		name="category_friendship">Friendship</string>
-	<string
-		name="category_other">Other</string>
-	<string
-		name="creditcard">CreditCard</string>
-	<string
-		name="check_creditcard">#credit</string>
-	<string
-		name="secret">Secret</string>
-	<string
-		name="check_secret">d expense</string>
-	<string
-		name="tweet">Tweet</string>
-	<string
-		name="reset">Reset</string>
-	<string
-		name="necessary_msg">%s is necessary.</string>
-	<string
-		name="only_number">expense can input only number.</string>
-	<string
-		name="too_long_msg">Tweet is too long.(%d)</string>
-	<string
-		name="menu_pref">Settings</string>
-	<string
-		name="menu_history">History</string>
-	<string
-		name="pref_category_title">Settings</string>
-	<string
-		name="currency_mark_use_key">pref_currency_mark_use</string>
-	<string
-		name="currency_mark_use_title">Use Currency Mark</string>
-	<string
-		name="currency_mark_use_sum">check if you use "space + currency mark" setting
-	</string>
-	<string
-		name="currency_mark_type_key">pref_currency_mark_type</string>
-	<string
-		name="currency_mark_type_title">Currency Mark</string>
-	<string
-		name="currency_mark_type_sum">select currency mark</string>
-	<string
-		name="currency_mark_type_dolar">$</string>
-	<string
-		name="currency_mark_type_yen">¥</string>
-	<string
-		name="currency_mark_type_euro">€</string>
-	<string
-		name="currency_mark_type_pound">£</string>
-	<string
-		name="default_secret_key">pref_default_secret</string>
-	<string
-		name="default_secret_title">Default secret</string>
-	<string
-		name="default_secret_sum">set secret default</string>
-	<string
-		name="pref_category_history">History</string>
-	<string
-		name="history_size_key">pref_history_size</string>
-	<string
-		name="history_size_title">Size</string>
-	<string
-		name="history_size_sum">History data size</string>
-	<string
-		name="pref_category_auth">Auth</string>
-	<string
-		name="pref_login_key">login</string>
-	<string
-		name="pref_login_title">Login</string>
-	<string
-		name="pref_state_logout">Not Logged in</string>
-	<string
-		name="pref_state_login">Already Logged in</string>
-	<string
-		name="pref_logout_key">logout</string>
-	<string
-		name="pref_logout_title">Logout</string>
-	<string
-		name="sort_key">SortKey</string>
-	<string
-		name="sort_order">SortOrder</string>
-	<string
-		name="twitter_prefs_key">pref</string>
-	<string
-		name="twitter_connect_key">status</string>
-	<string
-		name="twitter_oauth_token_key">oauth_token</string>
-	<string
-		name="twitter_oauth_token_secret_key">oauth_token_secret</string>
-	<string
-		name="twitter_oauth_verifier">oauth_verifier</string>
-	<string
-		name="tweet_success">Success!</string>
-	<string
-		name="tweet_fail">Failed.</string>
-	<string
-		name="please_login">Please login twitter from Menu > Setting > Login</string>
-	<string
-		name="auth_url">auth_url</string>
-	<string
-		name="callback_url">shoppingtweeter://oauth</string>
-	<string
-		name="consumer_key">zx6S2ou4UoIHdLtjQRYg</string>
-	<string
-		name="consumer_secret">wumWmiYcqvmpB73xx5hCIHfcumPH4sheEWow9DLEw</string>
-	<string
-		name="status_connected">connected</string>
-	<string
-		name="header_item">item_name</string>
-	<string
-		name="header_expense">expense</string>
+  <string
+    name="tweet_length">140</string>
+  <string
+    name="app_name">ShoppingTweeter</string>
+  <string
+    name="item">Item</string>
+  <string
+    name="expense">Expense</string>
+  <string
+    name="comment">Comment</string>
+  <string
+    name="category">Category</string>
+  <string
+    name="category_food">Food</string>
+  <string
+    name="category_lunch">Lunch</string>
+  <string
+    name="category_dinner">Dinner</string>
+  <string
+    name="category_alcohol">Alcohol</string>
+  <string
+    name="category_snack_cafe">Snack_Cafe</string>
+  <string
+    name="category_transport">Transport</string>
+  <string
+    name="category_stationery_tool">Stationery_Tool</string>
+  <string
+    name="category_book">Book</string>
+  <string
+    name="category_fashion">Fashion</string>
+  <string
+    name="category_beauty_health">Beauty_Health</string>
+  <string
+    name="category_hobby">Hobby</string>
+  <string
+    name="category_Household">Household</string>
+  <string
+    name="category_friendship">Friendship</string>
+  <string
+    name="category_other">Other</string>
+  <string
+    name="creditcard">CreditCard</string>
+  <string
+    name="check_creditcard">#credit</string>
+  <string
+    name="secret">Secret</string>
+  <string
+    name="check_secret">d expense</string>
+  <string
+    name="tweet">Tweet</string>
+  <string
+    name="reset">Reset</string>
+  <string
+    name="necessary_msg">%s is necessary.</string>
+  <string
+    name="only_number">expense can input only number.</string>
+  <string
+    name="too_long_msg">Tweet is too long.(%d)</string>
+  <string
+    name="menu_pref">Settings</string>
+  <string
+    name="menu_history">History</string>
+  <string
+    name="pref_category_title">Settings</string>
+  <string
+    name="currency_mark_use_key">pref_currency_mark_use</string>
+  <string
+    name="currency_mark_use_title">Use Currency Mark</string>
+  <string
+    name="currency_mark_use_sum">check if you use "space + currency mark" setting
+    </string>
+  <string
+    name="currency_mark_type_key">pref_currency_mark_type</string>
+  <string
+    name="currency_mark_type_title">Currency Mark</string>
+  <string
+    name="currency_mark_type_sum">select currency mark</string>
+  <string
+    name="currency_mark_type_dolar">$</string>
+  <string
+    name="currency_mark_type_yen">¥</string>
+  <string
+    name="currency_mark_type_euro">€</string>
+  <string
+    name="currency_mark_type_pound">£</string>
+  <string
+    name="default_secret_key">pref_default_secret</string>
+  <string
+    name="default_secret_title">Default secret</string>
+  <string
+    name="default_secret_sum">set secret default</string>
+  <string
+    name="pref_category_history">History</string>
+  <string
+    name="history_size_key">pref_history_size</string>
+  <string
+    name="history_size_title">Size</string>
+  <string
+    name="history_size_sum">History data size</string>
+  <string
+    name="pref_category_auth">Auth</string>
+  <string
+    name="pref_login_key">login</string>
+  <string
+    name="pref_login_title">Login</string>
+  <string
+    name="pref_state_logout">Not Logged in</string>
+  <string
+    name="pref_state_login">Already Logged in</string>
+  <string
+    name="pref_logout_key">logout</string>
+  <string
+    name="pref_logout_title">Logout</string>
+  <string
+    name="sort_key">SortKey</string>
+  <string
+    name="sort_order">SortOrder</string>
+  <string
+    name="twitter_prefs_key">pref</string>
+  <string
+    name="twitter_connect_key">status</string>
+  <string
+    name="twitter_oauth_token_key">oauth_token</string>
+  <string
+    name="twitter_oauth_token_secret_key">oauth_token_secret</string>
+  <string
+    name="twitter_oauth_verifier">oauth_verifier</string>
+  <string
+    name="tweet_success">Success!</string>
+  <string
+    name="tweet_fail">Failed.</string>
+  <string
+    name="please_login">Please login twitter from Menu > Setting > Login</string>
+  <string
+    name="auth_url">auth_url</string>
+  <string
+    name="callback_url">shoppingtweeter://oauth</string>
+  <string
+    name="consumer_key">zx6S2ou4UoIHdLtjQRYg</string>
+  <string
+    name="consumer_secret">wumWmiYcqvmpB73xx5hCIHfcumPH4sheEWow9DLEw</string>
+  <string
+    name="status_connected">connected</string>
+  <string
+    name="header_item">item_name</string>
+  <string
+    name="header_expense">expense</string>
 </resources>

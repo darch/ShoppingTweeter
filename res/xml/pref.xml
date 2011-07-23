@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical"
-	android:key="preference">
-	<PreferenceCategory
-		android:title="@string/pref_category_title">
-		<CheckBoxPreference
-			android:key="@string/currency_mark_use_key"
-			android:title="@string/currency_mark_use_title"
-			android:summary="@string/currency_mark_use_sum" />
-		<ListPreference
-			android:key="@string/currency_mark_type_key"
-			android:title="@string/currency_mark_type_title"
-			android:summary="@string/currency_mark_type_sum"
-			android:dependency="@string/currency_mark_use_key"
-			android:entries="@array/currency_mark_list"
-			android:entryValues="@array/currency_mark_list" />
-		<CheckBoxPreference
-			android:key="@string/default_secret_key"
-			android:title="@string/default_secret_title"
-			android:summary="@string/default_secret_sum" />
-	</PreferenceCategory>
-	<PreferenceCategory
-		android:title="@string/pref_category_history">
-		<ListPreference
-			android:key="@string/history_size_key"
-			android:title="@string/history_size_title"
-			android:summary="@string/history_size_sum"
-			android:entries="@array/history_size_list"
-			android:entryValues="@array/history_size_list" />
-	</PreferenceCategory>
-	<PreferenceCategory
-		android:title="@string/pref_category_auth">
-		<Preference
-			android:key="@string/pref_login_key"
-			android:title="@string/pref_login_title"
-			android:summary="@string/pref_state_logout" />
-		<Preference
-			android:key="@string/pref_logout_key"
-			android:title="@string/pref_logout_title" />
-	</PreferenceCategory>
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:key="preference">
+  <PreferenceCategory
+    android:title="@string/pref_category_title">
+    <CheckBoxPreference
+      android:key="@string/currency_mark_use_key"
+      android:title="@string/currency_mark_use_title"
+      android:summary="@string/currency_mark_use_sum" />
+    <ListPreference
+      android:key="@string/currency_mark_type_key"
+      android:title="@string/currency_mark_type_title"
+      android:summary="@string/currency_mark_type_sum"
+      android:dependency="@string/currency_mark_use_key"
+      android:entries="@array/currency_mark_list"
+      android:entryValues="@array/currency_mark_list" />
+    <CheckBoxPreference
+      android:key="@string/default_secret_key"
+      android:title="@string/default_secret_title"
+      android:summary="@string/default_secret_sum" />
+  </PreferenceCategory>
+  <PreferenceCategory
+    android:title="@string/pref_category_history">
+    <ListPreference
+      android:key="@string/history_size_key"
+      android:title="@string/history_size_title"
+      android:summary="@string/history_size_sum"
+      android:entries="@array/history_size_list"
+      android:entryValues="@array/history_size_list" />
+  </PreferenceCategory>
+  <PreferenceCategory
+    android:title="@string/pref_category_auth">
+    <Preference
+      android:key="@string/pref_login_key"
+      android:title="@string/pref_login_title"
+      android:summary="@string/pref_state_logout" />
+    <Preference
+      android:key="@string/pref_logout_key"
+      android:title="@string/pref_logout_title" />
+  </PreferenceCategory>
 </PreferenceScreen>

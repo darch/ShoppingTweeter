@@ -18,290 +18,290 @@ import android.preference.Preference.OnPreferenceClickListener;
 
 public class Pref extends PreferenceActivity {
 
-	// リクエストコード
-	private final int REQUEST_AUTH = 1;
+    // リクエストコード
+    private final int REQUEST_AUTH = 1;
 
-	private Preference login;
-	private Preference logout;
+    private Preference login;
+    private Preference logout;
 
-	private Twitter twitter = null;
-	private RequestToken requestToken = null;
+    private Twitter twitter = null;
+    private RequestToken requestToken = null;
 
-	// ログイン状態
-	private String auth_status = "";
+    // ログイン状態
+    private String auth_status = "";
 
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		addPreferencesFromResource(R.xml.pref);
+        addPreferencesFromResource(R.xml.pref);
 
-		// ログイン状態を取得
-		auth_status = Pref.getStatus(this);
+        // ログイン状態を取得
+        auth_status = Pref.getStatus(this);
 
-		login = (Preference) findPreference(getString(R.string.pref_login_key));
-		logout = (Preference) findPreference(getString(R.string.pref_logout_key));
+        login = (Preference) findPreference(getString(R.string.pref_login_key));
+        logout = (Preference) findPreference(getString(R.string.pref_logout_key));
 
-		setAction();
+        setAction();
 
-	}
+    }
 
-	@Override
-	protected void onStart() {
-		super.onStart();
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-		// ログイン状態を取得
-		auth_status = Pref.getStatus(this);
+        // ログイン状態を取得
+        auth_status = Pref.getStatus(this);
 
-		// ログイン状態を判定
-		if (isConnected(auth_status)) {
-			// ログイン済みの場合
+        // ログイン状態を判定
+        if (isConnected(auth_status)) {
+            // ログイン済みの場合
 
-			// Loginを非活性化し、Logoutを活性化
-			login.setEnabled(false);
-			logout.setEnabled(true);
-		} else {
-			// 未ログインの場合
+            // Loginを非活性化し、Logoutを活性化
+            login.setEnabled(false);
+            logout.setEnabled(true);
+        } else {
+            // 未ログインの場合
 
-			// Loginを活性化し、Logoutを非活性化
-			login.setEnabled(true);
-			logout.setEnabled(false);
-		}
+            // Loginを活性化し、Logoutを非活性化
+            login.setEnabled(true);
+            logout.setEnabled(false);
+        }
 
-	}
+    }
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
-		if (resultCode == RESULT_OK) {
-			super.onActivityResult(requestCode, resultCode, intent);
+        if (resultCode == RESULT_OK) {
+            super.onActivityResult(requestCode, resultCode, intent);
 
-			AccessToken accessToken = null;
+            AccessToken accessToken = null;
 
-			try {
-				// OAuthAccessTokenを取得
-				accessToken = twitter.getOAuthAccessToken(requestToken,
-						intent.getExtras().getString(getString(R.string.twitter_oauth_verifier)));
+            try {
+                // OAuthAccessTokenを取得
+                accessToken = twitter.getOAuthAccessToken(requestToken,
+                        intent.getExtras().getString(getString(R.string.twitter_oauth_verifier)));
 
-				SharedPreferences pref = getSharedPreferences(getString(R.string.twitter_prefs_key), MODE_PRIVATE);
+                SharedPreferences pref = getSharedPreferences(getString(R.string.twitter_prefs_key), MODE_PRIVATE);
 
-				// SharedPreferenceにOAuthAccessTokenを記録
-				SharedPreferences.Editor editor = pref.edit();
-				editor.putString(getString(R.string.twitter_oauth_token_key), accessToken.getToken());
-				editor.putString(getString(R.string.twitter_oauth_token_secret_key), accessToken.getTokenSecret());
-				editor.putString(getString(R.string.twitter_connect_key), getString(R.string.status_connected));
+                // SharedPreferenceにOAuthAccessTokenを記録
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString(getString(R.string.twitter_oauth_token_key), accessToken.getToken());
+                editor.putString(getString(R.string.twitter_oauth_token_secret_key), accessToken.getTokenSecret());
+                editor.putString(getString(R.string.twitter_connect_key), getString(R.string.status_connected));
 
-				editor.commit();
+                editor.commit();
 
-			} catch (TwitterException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+            } catch (TwitterException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-	/**
-	 * 処理を設定
-	 */
-	private void setAction() {
-		login.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+    /**
+     * 処理を設定
+     */
+    private void setAction() {
+        login.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				try {
-					// ログイン処理を開始
-					connectTwitter();
-					return true;
-				} catch (TwitterException e) {
-					e.printStackTrace();
-					return false;
-				}
-			}
-		});
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                try {
+                    // ログイン処理を開始
+                    connectTwitter();
+                    return true;
+                } catch (TwitterException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+        });
 
-		logout.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        logout.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				// ログアウト処理を開始
-				disconnectTwitter();
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                // ログアウト処理を開始
+                disconnectTwitter();
 
-				login.setEnabled(true);
-				logout.setEnabled(false);
+                login.setEnabled(true);
+                logout.setEnabled(false);
 
-				return true;
-			}
-		});
-	}
+                return true;
+            }
+        });
+    }
 
-	/**
-	 * ログイン済みか判定する
-	 * 
-	 * @param status
-	 * @return
-	 */
-	private boolean isConnected(String status) {
-		boolean result = false;
+    /**
+     * ログイン済みか判定する
+     * 
+     * @param status
+     * @return
+     */
+    private boolean isConnected(String status) {
+        boolean result = false;
 
-		if (status != null && status.equals(getString(R.string.status_connected))) {
-			// statusがnullじゃなく、かつ"connected"の場合はログイン済み
-			return true;
-		}
+        if (status != null && status.equals(getString(R.string.status_connected))) {
+            // statusがnullじゃなく、かつ"connected"の場合はログイン済み
+            return true;
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	/**
-	 * ログイン処理を行う
-	 * 
-	 * @throws TwitterException
-	 */
-	private void connectTwitter() throws TwitterException {
+    /**
+     * ログイン処理を行う
+     * 
+     * @throws TwitterException
+     */
+    private void connectTwitter() throws TwitterException {
 
-		// Consumer keyとConsumer secretを設定
-		ConfigurationBuilder confbuilder = new ConfigurationBuilder();
-		confbuilder.setOAuthConsumerKey(getString(R.string.consumer_key));
-		confbuilder.setOAuthConsumerSecret(getString(R.string.consumer_secret));
+        // Consumer keyとConsumer secretを設定
+        ConfigurationBuilder confbuilder = new ConfigurationBuilder();
+        confbuilder.setOAuthConsumerKey(getString(R.string.consumer_key));
+        confbuilder.setOAuthConsumerSecret(getString(R.string.consumer_secret));
 
-		twitter = new TwitterFactory(confbuilder.build()).getInstance();
+        twitter = new TwitterFactory(confbuilder.build()).getInstance();
 
-		// requestTokenの取得
-		try {
-			requestToken = twitter.getOAuthRequestToken(getString(R.string.callback_url));
-		} catch (TwitterException e) {
-			e.printStackTrace();
-		}
+        // requestTokenの取得
+        try {
+            requestToken = twitter.getOAuthRequestToken(getString(R.string.callback_url));
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
 
-		// 認証用URLをインテントにセット。
-		// TwitterLoginはActivityのクラス名。
-		Intent intent = new Intent(this, TwitterLogin.class);
-		intent.putExtra(getString(R.string.auth_url), requestToken.getAuthorizationURL());
+        // 認証用URLをインテントにセット。
+        // TwitterLoginはActivityのクラス名。
+        Intent intent = new Intent(this, TwitterLogin.class);
+        intent.putExtra(getString(R.string.auth_url), requestToken.getAuthorizationURL());
 
-		// アクティビティを起動
-		this.startActivityForResult(intent, REQUEST_AUTH);
+        // アクティビティを起動
+        this.startActivityForResult(intent, REQUEST_AUTH);
 
-	}
+    }
 
-	/**
-	 * ログアウト処理を行う
-	 */
-	private void disconnectTwitter() {
+    /**
+     * ログアウト処理を行う
+     */
+    private void disconnectTwitter() {
 
-		SharedPreferences pref = getSharedPreferences(getString(R.string.twitter_prefs_key), MODE_PRIVATE);
+        SharedPreferences pref = getSharedPreferences(getString(R.string.twitter_prefs_key), MODE_PRIVATE);
 
-		SharedPreferences.Editor editor = pref.edit();
-		editor.remove(getString(R.string.twitter_oauth_token_key));
-		editor.remove(getString(R.string.twitter_oauth_token_secret_key));
-		editor.remove(getString(R.string.twitter_connect_key));
+        SharedPreferences.Editor editor = pref.edit();
+        editor.remove(getString(R.string.twitter_oauth_token_key));
+        editor.remove(getString(R.string.twitter_oauth_token_secret_key));
+        editor.remove(getString(R.string.twitter_connect_key));
 
-		editor.commit();
+        editor.commit();
 
-	}
+    }
 
-	/**
-	 * currencrMarkの設定値取得メソッド
-	 * 
-	 * @param context
-	 * @return
-	 */
-	public static boolean useCurrencyMark(Context context) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		return prefs.getBoolean(context.getString(R.string.currency_mark_use_key), false);
-	}
+    /**
+     * currencrMarkの設定値取得メソッド
+     * 
+     * @param context
+     * @return
+     */
+    public static boolean useCurrencyMark(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(context.getString(R.string.currency_mark_use_key), false);
+    }
 
-	/**
-	 * currencyMarkの文字取得メソッド
-	 * 
-	 * @param context
-	 * @return
-	 */
-	public static String getCurrencyMark(Context context) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		return prefs.getString(context.getString(R.string.currency_mark_type_key),
-				context.getString(R.string.currency_mark_type_dolar));
-	}
+    /**
+     * currencyMarkの文字取得メソッド
+     * 
+     * @param context
+     * @return
+     */
+    public static String getCurrencyMark(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(context.getString(R.string.currency_mark_type_key),
+                context.getString(R.string.currency_mark_type_dolar));
+    }
 
-	/**
-	 * default secretの設定値取得メソッド
-	 * 
-	 * @param context
-	 * @return
-	 */
-	public static boolean getDefaultSecret(Context context) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		return prefs.getBoolean(context.getString(R.string.default_secret_key), false);
-	}
+    /**
+     * default secretの設定値取得メソッド
+     * 
+     * @param context
+     * @return
+     */
+    public static boolean getDefaultSecret(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(context.getString(R.string.default_secret_key), false);
+    }
 
-	/**
-	 * History Sizeの設定値取得メソッド
-	 * 
-	 * @param context
-	 * @return
-	 */
-	public static int getHistorySize(Context context) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		String historySize = prefs.getString(context.getString(R.string.history_size_key), "10");
-		return Integer.parseInt(historySize);
-	}
+    /**
+     * History Sizeの設定値取得メソッド
+     * 
+     * @param context
+     * @return
+     */
+    public static int getHistorySize(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String historySize = prefs.getString(context.getString(R.string.history_size_key), "10");
+        return Integer.parseInt(historySize);
+    }
 
-	/**
-	 * ログイン状態の取得メソッド
-	 * 
-	 * @param context
-	 * @return
-	 */
-	public static String getStatus(Context context) {
-		SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.twitter_prefs_key),
-				MODE_PRIVATE);
+    /**
+     * ログイン状態の取得メソッド
+     * 
+     * @param context
+     * @return
+     */
+    public static String getStatus(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.twitter_prefs_key),
+                MODE_PRIVATE);
 
-		return prefs.getString(context.getString(R.string.twitter_connect_key), "");
-	}
+        return prefs.getString(context.getString(R.string.twitter_connect_key), "");
+    }
 
-	/**
-	 * ソートキー取得メソッド
-	 * 
-	 * @param context
-	 * @return
-	 */
-	public static int getSortKey(Context context) {
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-		int sortKey = pref.getInt(context.getString(R.string.sort_key), HistoryTableDAO.COLUMN_ITEM_NAME);
-		return sortKey;
-	}
+    /**
+     * ソートキー取得メソッド
+     * 
+     * @param context
+     * @return
+     */
+    public static int getSortKey(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        int sortKey = pref.getInt(context.getString(R.string.sort_key), HistoryTableDAO.COLUMN_ITEM_NAME);
+        return sortKey;
+    }
 
-	/**
-	 * ソート順取得メソッド
-	 * 
-	 * @param context
-	 * @return
-	 */
-	public static int getSortOrder(Context context) {
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-		int sortOrder = pref.getInt(context.getString(R.string.sort_order), HistoryTableDAO.SORT_BY_ASC);
-		return sortOrder;
-	}
+    /**
+     * ソート順取得メソッド
+     * 
+     * @param context
+     * @return
+     */
+    public static int getSortOrder(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        int sortOrder = pref.getInt(context.getString(R.string.sort_order), HistoryTableDAO.SORT_BY_ASC);
+        return sortOrder;
+    }
 
-	/**
-	 * OAuth Token取得メソッド
-	 * 
-	 * @param context
-	 * @return
-	 */
-	public static String getOauthToken(Context context) {
-		SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.twitter_prefs_key),
-				MODE_PRIVATE);
+    /**
+     * OAuth Token取得メソッド
+     * 
+     * @param context
+     * @return
+     */
+    public static String getOauthToken(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.twitter_prefs_key),
+                MODE_PRIVATE);
 
-		return prefs.getString(context.getString(R.string.twitter_oauth_token_key), "");
-	}
+        return prefs.getString(context.getString(R.string.twitter_oauth_token_key), "");
+    }
 
-	/**
-	 * OAuth Token Secret取得メソッド
-	 * 
-	 * @param context
-	 * @return
-	 */
-	public static String getOauthTokenSecret(Context context) {
-		SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.twitter_prefs_key),
-				MODE_PRIVATE);
+    /**
+     * OAuth Token Secret取得メソッド
+     * 
+     * @param context
+     * @return
+     */
+    public static String getOauthTokenSecret(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.twitter_prefs_key),
+                MODE_PRIVATE);
 
-		return prefs.getString(context.getString(R.string.twitter_oauth_token_secret_key), "");
-	}
+        return prefs.getString(context.getString(R.string.twitter_oauth_token_secret_key), "");
+    }
 }
