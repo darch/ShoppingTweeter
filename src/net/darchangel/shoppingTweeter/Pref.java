@@ -242,6 +242,11 @@ public class Pref extends PreferenceActivity {
         return Integer.parseInt(historySize);
     }
 
+    public static float getHistoryFontSize(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String historyFontSize = prefs.getString(context.getString(R.string.history_font_size_key), "20");
+        return Float.parseFloat(historyFontSize);
+    }
     /**
      * ログイン状態の取得メソッド
      * 

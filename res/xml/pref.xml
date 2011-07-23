@@ -29,6 +29,12 @@
       android:summary="@string/history_size_sum"
       android:entries="@array/history_size_list"
       android:entryValues="@array/history_size_list" />
+    <EditTextPreference
+      android:key="@string/history_font_size_key"
+      android:title="@string/history_font_size_title"
+      android:summary="@string/history_font_size_sum"
+      android:dialogTitle="@string/history_font_size_dialogtitle"
+      android:inputType="number" />
   </PreferenceCategory>
   <PreferenceCategory
     android:title="@string/pref_category_auth">

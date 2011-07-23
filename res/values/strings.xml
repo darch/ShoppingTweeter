@@ -96,9 +96,17 @@
   <string
     name="history_size_key">pref_history_size</string>
   <string
-    name="history_size_title">Size</string>
+    name="history_size_title">History Size</string>
   <string
     name="history_size_sum">History data size</string>
+  <string
+    name="history_font_size_key">pref_history_font_size</string>
+  <string
+    name="history_font_size_title">Font size</string>
+  <string
+    name="history_font_size_sum">History data font size</string>
+  <string
+    name="history_font_size_dialogtitle">Input font size</string>
   <string
     name="pref_category_auth">Auth</string>
   <string

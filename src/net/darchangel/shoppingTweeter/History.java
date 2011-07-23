@@ -12,7 +12,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TableLayout;
@@ -27,16 +26,21 @@ public class History extends Activity {
     // ヘッダを含まないデータの行数
     int row_num = 0;
 
+    // リストのフォントサイズ
+    float fontSize = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history);
 
         historyTable = (TableLayout) findViewById(R.id.history_table);
+        fontSize = Pref.getHistoryFontSize(History.this);
 
         createHistoryTable();
 
         TextView header_item = (TextView) findViewById(R.id.header_item);
+        header_item.setTextSize(fontSize);
         header_item.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -70,6 +74,7 @@ public class History extends Activity {
         });
 
         TextView header_expense = (TextView) findViewById(R.id.header_expense);
+        header_expense.setTextSize(fontSize);
         header_expense.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -142,14 +147,14 @@ public class History extends Activity {
             // 品目名を取得
             TextView item = new TextView(this);
             item.setText(shoppingItem.getItemName());
-            item.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            item.setTextSize(fontSize);
             item.setBackgroundColor(Color.BLACK);
             item.setLayoutParams(item_layout);
 
             // 金額を取得
             TextView expense = new TextView(this);
             expense.setText(Integer.toString((shoppingItem.getExpense())));
-            expense.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            expense.setTextSize(fontSize);
             expense.setGravity(Gravity.RIGHT);
             expense.setBackgroundColor(Color.BLACK);
             expense.setLayoutParams(expense_layout);
